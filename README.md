@@ -43,7 +43,7 @@ This is all that is needed to strictly connect to the database. However, the sam
 #### Integrate Pods in Project:
 1. In the same window, go to your project directory by running 
 ```bash
-$ cd GroceryHandler
+$ cd workshop-IOS-Astra
 ```
 2. To install CocoaPods, run: 
 ```bash
@@ -66,14 +66,12 @@ pod 'GoogleMLKit/TextRecognition','2.2.0'
 $ pod install
 ```
 
-![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.44.02%20PM.png)
-
 Now the pods are installed and the project will build once opened on XCode!
 
 #### Remove Pods from project:
 1. After cloning the git repo, go to your project directory by running:
 ```bash
-$ cd GroceryHandler
+$ cd workshop-IOS-Astra
 ```
 2. Run these commands to remove the pods from the project:
 ```bash
@@ -91,7 +89,7 @@ Launch the XCode app and select *Open a project or file*
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
 Click on the *GroceryHandler.xcworkspace* file and select *Open*
-![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.19%20PM.png)
+![](READMEPictures/Screen%20Shot%202022-07-15%20at%204.09.43%20PM.png)
 
 
 
@@ -100,7 +98,7 @@ Build the project and run the app by clicking the big play button at the top lef
 ## How to connect to your own database in the app:
 If you would like to connect to your Astra DB from this app, you will need to change these environment variables in XCode:
 ```
-ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN
+ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN, ASTRA_DB_KEYSPACENAME
 ```
 The *ASTRA_DB_ID* can be found in the dashboard of the astra website:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%204.17.34%20PM.png)
@@ -109,7 +107,7 @@ To change the values of the environment variables in XCode, first click on *Edit
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.25.48%20AM.png)
 
 This will open the following window in which you can change the values of the environment variables:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.26.16%20AM.png)
+![](READMEPictures/Screen%20Shot%202022-07-15%20at%204.11.06%20PM.png)
 
 The app accesses the environment variables in the *GroceryHandlerApp.swift* file:
 ```swift
@@ -122,6 +120,9 @@ public var ASTRA_DB_REGION:String? {
 }
 public var ASTRA_DB_TOKEN:String? {
     ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
+}
+public var ASTRA_DB_KEYSPACENAME:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_KEYSPACENAME"]
 }
 ```
 XCode sets up the environment variables, which means that the app can only be run from XCode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
