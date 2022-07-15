@@ -37,7 +37,7 @@ See -> [Prerequisites first](https://github.com/vmic2002/GroceryHandler#prerequi
 
 Go to the directory where you would like your project to reside. Clone the project by running:
 ```bash
-$ git clone https://github.com/vmic2002/GroceryHandler.git
+$ git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
 ```
 This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/vmic2002/GroceryHandler#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/vmic2002/GroceryHandler#remove-pods-from-project).
 #### Integrate Pods in Project:
