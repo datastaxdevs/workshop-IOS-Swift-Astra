@@ -33,7 +33,7 @@ The XCode version for this application is version 13.4.1.
 
 
 ## How to replicate project:
-See -> [Prerequisites first](https://github.com/vmic2002/GroceryHandler#prerequisites)
+See -> [Prerequisites first](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#prerequisites)
 
 Go to the directory where you would like your project to reside. Clone the project by running:
 ```bash
