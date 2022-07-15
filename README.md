@@ -175,7 +175,7 @@ The [JSONEncoder](https://developer.apple.com/documentation/foundation/jsonencod
 ### Using Document API to connect to your Astra DB:
 The URL to connect to your Astra db using the Document API is : (this is already in the *DBController.swift* file)
 ```
-https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACE/collections/{collection-id}
+https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/{collection-id}
 ```
 Check out the [Astra DB documentation](https://docs.datastax.com/en/astra/docs/develop/dev-with-doc.html) for more information.
 
