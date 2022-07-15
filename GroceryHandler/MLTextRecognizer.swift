@@ -4,14 +4,9 @@
 //
 //  Created by Victor Micha on 6/27/22.
 //
-
-import Foundation
-//import UIKit
+//some code for this file is taken/copied from https://developers.google.com/ml-kit/vision/text-recognition/ios
 import MLKitTextRecognition
 import MLKitVision
-
-//code for this file is taken/copied from https://developers.google.com/ml-kit/vision/text-recognition/ios
-
 
 func getPricesAsArray(image:UIImage){
     var prices1 = [Double]()
@@ -20,22 +15,19 @@ func getPricesAsArray(image:UIImage){
     visionImage.orientation = image.imageOrientation
     textRecognizer.process(visionImage) { result, error in
         guard error == nil, let result = result else {
-            // Error handling
             print("Error getting text from picture")
             return
         }
-        // Recognized text
         print("Text recognized")
         //let resultText = result.text
-        var i = 0
         for block in result.blocks {
-           // let blockText = block.text
-            //  let blockLanguages = block.recognizedLanguages
-            // let blockCornerPoints = block.cornerPoints
-            // let blockFrame = block.frame
+            //let blockText = block.text
+            //let blockLanguages = block.recognizedLanguages
+            //let blockCornerPoints = block.cornerPoints
+            //let blockFrame = block.frame
             //print("Block \(i): ")//\(blockText)")
             for line in block.lines {
-                let lineText = line.text
+                //let lineText = line.text
                 // let lineLanguages = line.recognizedLanguages
                 // let lineCornerPoints = line.cornerPoints
                 // let lineFrame = line.frame
@@ -45,30 +37,24 @@ func getPricesAsArray(image:UIImage){
                     // let elementCornerPoints = element.cornerPoints
                     // let elementFrame = element.frame
                     if var cost = Double(elementText) {
-                       // print("The user entered a value price of \(cost)")
                         if (cost>0.0 && cost<300.0){//reasonable price range is in between 0 and 300 (arbitrary)
-                            cost =  Double(round(100*cost)/100)//round to 2 decimal spots
+                            cost =  Double(round(100*cost)/100)//round to 2 decimal places
                             //print("ADDED TO PRICES: \(cost)")
                             prices1.append(cost)
                         }
                     } else {
                         //print("Not a valid number: \(elementText)")
                     }
-                    //print("ElementText: \(elementText)")
                 }
             }
-            i+=1
         }
         print("Done going through whole text")
         //print("Printing prices:")
         //for x in prices1 {
         //    print(x)
         //}
-       // print("PRICES NUMBER: \(prices1.count)")
         pricesManager.prices = prices1
         pricesManager.getPrices = true
-        //print("Prices manager updated. Should switch to Add users view")
+        //print("Prices manager updated. Should switch to Finalize Prices view")
     }
-    print("Done with get prices as array method")
-
 }

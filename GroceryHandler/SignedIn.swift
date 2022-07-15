@@ -9,11 +9,9 @@ import SwiftUI
 
 struct SignedIn: View {
     @State var userName:String
-    @State var items = [Item]()
-    //  @State private var prices = Set<Double>()
+    @State private var items = [Item]()
     @State private var users = Set<String>()
     @State private var user: String = ""
-    //@State private var payer:String = ""
     @State private var price: String = ""
     @State private var errMsg = ""
     @State private var errColor = Color.red
@@ -22,24 +20,15 @@ struct SignedIn: View {
     @State private var pastOrders = false
     @State private var pictureReceipt = false
     var body: some View {
-        //Text("In Signed In VIEW \(userName)")
-        // NavigationView{
-        
         VStack{
-            
             Text("Hello, \(userName)")
                 .font(.title)
-                //.foregroundColor(Color.green)
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
-                //.padding(.top, 10)
-            
-           // Form{
             VStack{
                 HStack{
                     Spacer()
                     Text(errMsg)
-                        //.padding(.all, 5)
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .foregroundColor(errColor)
@@ -52,27 +41,25 @@ struct SignedIn: View {
                         .textFieldStyle(CustomTextField())
                     Button("Add User"){
                         if (user.count==0){
-                            //errorMessage = "Username and password cannot be empty"
                             errColor = Color.red
-                            errMsg = "user cannot be empty"
+                            errMsg = "User cannot be empty."
                             return
                         }
-                        //CHECK THAT USER IS A VALID USER NAME AND THAT IT HAS NOT ALREADY BEEN ENTERER IN USERS  TO SET
-                        // ADD IT TO USERS SET
+                        //check that user has account and that is has not already been added to users. Then add it to users
                         if (getUserInfoForUserName(userName: user).count==0){
                             errColor = Color.red
-                            errMsg = "no account found for: \(user)"
+                            errMsg = "No account found for: \(user)."
                             return
                         }
                         if (users.contains(user)){
                             errColor = Color.red
-                            errMsg = "\(user) already added"
+                            errMsg = "\(user) already added."
                             return
                         }
                         users.insert(user)
                         errColor = Color.green
-                        errMsg = "\(user) added to users"
-                    }//.padding(.all, 10)
+                        errMsg = "\(user) added to users."
+                    }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
@@ -82,21 +69,19 @@ struct SignedIn: View {
                         .textFieldStyle(CustomTextField())
                     Button("Add Item"){
                         if (price.count==0){
-                            //errorMessage = "Username and password cannot be empty"
                             errColor = Color.red
                             errMsg = "Price is empty!"
                             return
                         }
                         if (users.count==0){
                             errColor = Color.red
-                            errMsg = "Num users = 0"
+                            errMsg = "Number of users must be > 0!"
                             return
                         }
-                        //if price is valid double
-                        var pr = 0.00//2 decimal places
+                        //check that price is a valid double
+                        var pr = 0.0
                         if var p = Double(price) {
-                            //errMsg = "The user entered a value pr ice of \(p)"
-                            p = Double(round(100*p)/100)//round to 2 decimal spots
+                            p = Double(round(100*p)/100)//round to 2 decimal places
                             pr = p
                         } else {
                             errColor = Color.red
@@ -114,8 +99,7 @@ struct SignedIn: View {
                                 temp += "\(user) "
                             }
                             temp+="\n"
-                            
-                       }
+                        }
                         orderStr = temp
                         if !(orderSummary.isEmpty){
                             orderSummary = ""
@@ -124,19 +108,15 @@ struct SignedIn: View {
                         user = ""
                         price = ""
                         users.removeAll()
-                    }//.padding(.all, 10)
+                    }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                 }
-                
                 HStack{
                     Spacer()
                     Button("Take picture of receipt instead"){
-                        //GO TO NEW VIEW WHERE TAKING PICTURE WITH CAMERA AND ML IS DONE to get prices
-                        //WILL ALSO HAVE TO ASK USER WHO USED WHAT PRODUCT to get users
-                        //then post order/compute
-                        //  errMsg = "Coming soon!"
+                        //go to new view where taking picture of receipt is done to get prices
                         pictureReceipt = true
                     }
                     .multilineTextAlignment(.center)
@@ -145,30 +125,20 @@ struct SignedIn: View {
                     Spacer()
                 }.frame(height:60)
             }
-          //  }
-           // .frame(height: 350)
             .padding(.bottom, 10)
-            
-           
             Button("See past orders"){
                 pastOrders = true
             }
-            //.padding(.all, 10)
-            //.frame(height: 20)
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
             ScrollView{
                 Text("\n\n\(orderStr)")
-                // .padding(.all, 5)
                     .multilineTextAlignment(.center)
                 Text(orderSummary)
-                // .padding(.all, 5)
                     .multilineTextAlignment(.center)
-                // .frame(width:320, height:150)
-                //.lineLimit(30)
             }
-            .background(Color(red: 0.3, green: 0.6, blue: 0.8))//automatically appears/disapears
+            .background(Color(red: 0.3, green: 0.6, blue: 0.8))//automatically appears/disapears depending on if Text is empty or not
             .cornerRadius(15)
             .frame(width:300, height: 200)
             .font(.callout)
@@ -176,34 +146,29 @@ struct SignedIn: View {
             Button("Post order and view summary"){
                 if (items.isEmpty){
                     errColor = Color.red
-                    errMsg = "No items were added."//An order must have at least 1 item"
+                    errMsg = "An order must have at least 1 item."
                     orderSummary = ""
                     orderStr = ""
                     return
                 }
-                dateFormatter.dateFormat = "M/d/y, HH:mm:ss"//"YY/MM/dd"
+                dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                
-               // let order = Order(userName: userName, receipt: items, paid: false, time: Date().formatted())
-                //Date().formatted() : 6/27/2022, 1:44 PM
                 postRequest(order: order)
                 errColor = Color.green
-                errMsg = "Order posted to db"
+                errMsg = "Order posted to db."
                 user = ""
                 price = ""
                 items.removeAll()
                 users.removeAll()
                 orderSummary = computeAmoundOwed(order: order)
                 orderStr = getOrderAsString(order: order)
-                
-            }//.padding(.all, 10)
+            }
             .multilineTextAlignment(.center)
             .padding(.top,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0.4, blue: 0.5)))
             Button("Clear all entries"){
                 user = ""
-                //payer = ""
                 price = ""
                 items.removeAll()
                 users.removeAll()
@@ -222,6 +187,6 @@ struct SignedIn: View {
 
 struct SignedIn_Previews: PreviewProvider {
     static var previews: some View {
-        SignedIn(userName:"userName")
+        SignedIn(userName:"testUserName")
     }
 }

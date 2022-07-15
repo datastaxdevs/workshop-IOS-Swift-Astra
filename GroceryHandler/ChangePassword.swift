@@ -23,14 +23,14 @@ struct ChangePassword: View {
                 .font(.body)
                 .multilineTextAlignment(.center)
                 .foregroundColor(errColor)
-            TextField("New password here", text: $newPassword)
+            TextField("New password here:", text: $newPassword)
                 .textFieldStyle(CustomTextField())
             HStack{
                 Spacer()
                 Button("Change Password"){
                     if (newPassword.count==0){
                         errColor = Color.red
-                        errMsg = "New password cannot be empty"
+                        errMsg = "New password cannot be empty."
                         return
                     }
                     changePassword(newPassword: newPassword, userName: userName)
@@ -42,7 +42,6 @@ struct ChangePassword: View {
                 .padding(.all, 10)
             }
             Spacer()
-            
         }.background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }
 }

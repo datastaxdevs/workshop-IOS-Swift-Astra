@@ -13,7 +13,7 @@ struct FinalizePrices: View {
     @State var userName:String
     @State var prices:[Double]
     @State private var price:String = ""
-    @State private var errMsg = ""//"Error: Invalid input"
+    @State private var errMsg = ""
     @State private var errMsgColor = Color.red
     @State private var listFinalized = false
     var body: some View {
@@ -21,7 +21,7 @@ struct FinalizePrices: View {
             ScrollView{
                 Text("Number of prices = \(prices.count)")
                 ForEach(0 ..< prices.count, id: \.self) { value in
-                    Text(String(format: "%.2f", prices[value]))//.2f -> 2 decimal points`
+                    Text(String(format: "%.2f", prices[value]))//.2f -> 2 decimal points
                         .multilineTextAlignment(.center)
                 }
             }
@@ -43,7 +43,6 @@ struct FinalizePrices: View {
             .padding(.all,15)
             .buttonStyle(CustomButton(color:Color(red: 0.3, green: 0.7, blue: 0.4)))
             Spacer()
-            
             Text(errMsg)
                 .multilineTextAlignment(.center)
                 .font(.body)
@@ -55,22 +54,22 @@ struct FinalizePrices: View {
                     if var newPrice = Double(price){
                         if (newPrice>0 && newPrice<300){
                             //newPrice has to be < 300 is arbitrary
-                            //this is also the case in MLTextRecognizer
-                            newPrice = Double(round(100*newPrice)/100)//round to 2 decimal spots
+                            //this is also the case in MLTextRecognizer.swift
+                            newPrice = Double(round(100*newPrice)/100)//round to 2 decimal places
                             prices.append(newPrice)
                             errMsgColor = Color.green
-                            errMsg = "Price \(newPrice) added"
+                            errMsg = "Price \(newPrice) added."
                             price = ""
                             return
                         } else {
                             errMsgColor = Color.red
-                            errMsg = "Price \(newPrice) not in valid range"
+                            errMsg = "Price \(newPrice) not in valid range."
                             price = ""
                             return
                         }
                     }
                     errMsgColor = Color.red
-                    errMsg = "Please input a valid price"
+                    errMsg = "Please input a valid price."
                     price = ""
                 }
                 .multilineTextAlignment(.center)
@@ -80,28 +79,27 @@ struct FinalizePrices: View {
                     if var newPrice = Double(price){
                         if (newPrice>0 && newPrice<300){
                             //newPrice has to be < 300 is arbitrary
-                            //this is also the case in MLTextRecognizer
-                           newPrice = Double(round(100*newPrice)/100) //round 2 decimals spots
+                            //this is also the case in MLTextRecognizer.swift
+                            newPrice = Double(round(100*newPrice)/100)//round 2 decimals places
                             let ind = prices.firstIndex(of: newPrice)
                             if !(ind==nil){
                                 prices.remove(at: ind!)
-                                //print("Price \(newPrice) removed")
                                 errMsgColor = Color.green
-                                errMsg = "Price \(newPrice) removed"
+                                errMsg = "Price \(newPrice) removed."
                             } else {
                                 errMsgColor = Color.red
-                                errMsg = "Price \(newPrice) not found in list"
+                                errMsg = "Price \(newPrice) not found in list."
                             }
                             price = ""
                             return
                         }
                         errMsgColor = Color.red
-                        errMsg = "Price \(newPrice) not in valid range"
+                        errMsg = "\(newPrice) is not in the valid range."
                         price = ""
                         return
                     }
                     errMsgColor = Color.red
-                    errMsg = "Please input a valid price"
+                    errMsg = "Please input a valid price."
                     price = ""
                 }
                 .multilineTextAlignment(.center)
@@ -110,7 +108,6 @@ struct FinalizePrices: View {
             }
         }
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))
-   
     }
 }
 

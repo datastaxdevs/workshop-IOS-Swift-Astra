@@ -1,4 +1,3 @@
-
 //
 //  GroceryHandlerApp.swift
 //  GroceryHandler
@@ -26,6 +25,9 @@ public var ASTRA_DB_REGION:String? {
 }
 public var ASTRA_DB_TOKEN:String? {
     ProcessInfo.processInfo.environment["ASTRA_DB_TOKEN"]
+}
+public var ASTRA_DB_KEYSPACENAME:String? {
+    ProcessInfo.processInfo.environment["ASTRA_DB_KEYSPACENAME"]
 }
 
 struct Order : Codable {
@@ -57,7 +59,6 @@ struct Password: Codable{
 var orders = [Order]()
 var gotOrders = false
 var localOrderDB = [String:Order]()
-
 var gotUserInfo = false
 var localUserInfoDB = [String:UserInfo]()
 
@@ -67,9 +68,9 @@ let dateFormatter = DateFormatter()
 
 //usernames for random orders to populate the database
 let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
-             "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
-             "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
-             "Jan1", "Holly1", "Mose1", "Joe1"]
+                 "Oscar1", "Phillys1", "Stanley1", "Andy1", "Toby1", "Kelly1",
+                 "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
+                 "Jan1", "Holly1", "Mose1", "Joe1"]
 
 //this struct is taken/copied from https://www.hackingwithswift.com/quick-start/swiftui/customizing-button-with-buttonstyle
 struct CustomButton: ButtonStyle {
@@ -81,7 +82,6 @@ struct CustomButton: ButtonStyle {
             .foregroundColor(.white)
             .clipShape(Capsule())
             .animation(.easeOut)
-            //.transition(.move(edge: .trailing))
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
             .shadow(radius: configuration.isPressed ? 40 : 0)
     }
@@ -95,14 +95,12 @@ struct CustomTextField: TextFieldStyle {
             .disableAutocorrection(true)
             .foregroundColor(Color(red: 0, green: 0, blue: 0.4))
             .padding(10)
-            .overlay(//https://stackoverflow.com/questions/67132408/i-have-trouble-using-cornerradius-and-borders-on-a-textfield-in-swiftui
+            .overlay(
                 RoundedRectangle(cornerRadius: 14)
                     .stroke(Color.blue, lineWidth: 2)
             )
             .padding()
-      }
-    
-    
+    }
 }
 
 //to know average bytes of random order
@@ -119,7 +117,6 @@ func getAverageNumBytesOfDoc()->Int{
         }
         print(uploadData)
         sum+=Int(uploadData.count)
-        
     }
     //print("Average is \(sum/numNewOrders)")
     return sum/numNewOrders
@@ -163,7 +160,7 @@ func getRandomOrder(userNames:[String])->Order{
             users.append(userNames[i])
         }
         let price = Double.random(in: 0.5...50.0)//0.5...50.0 is arbitrary
-        let priceRounded = round(price*1000)/1000
+        let priceRounded = round(price*100)/100//round to 2 decimal places
         let item = Item(price: priceRounded, users: users)
         receipt.append(item)
     }
@@ -175,7 +172,7 @@ func getRandomOrder(userNames:[String])->Order{
 func printAllOrdersFor(userName:String){
     let orders1 = getAllOrdersForUserName(userName: userName).orders
     printOrders(orders: orders1)
-    print("there are \(orders1.count) orders")
+    print("There are \(orders1.count) orders.")
 }
 
 func printUserInfoFor(userName:String){
@@ -218,14 +215,13 @@ func computeAmountOwed(order:Order, dict: inout [String:Double]){
         }
     }
     //each user owes dict[user] to order.userName
-    print("end of compute amound owed method")
 }
 
 func printOrder(order:Order){
     print("Payer user name: \(order.userName)")
     print("Receipt: ")
     for item in order.receipt {
-        print("item price: \(item.price)")
+        print("Item price: \(item.price)")
         //print("User: ", terminator: "")
         // for user in item.users {//
         //     print("\(user) ", terminator: "")
@@ -243,24 +239,20 @@ func printOrders(orders:[Order]){
 //to go back to ContentView view from AddUsers view
 //code taken/copied from https://stackoverflow.com/questions/57334455/how-can-i-pop-to-the-root-view-using-swiftui/59662275#59662275
 struct NavigationUtil {
-  static func popToRootView() {
-    findNavigationController(viewController: UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.rootViewController)?
-      .popToRootViewController(animated: true)
-  }
-
-  static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
-    guard let viewController = viewController else {
-      return nil
+    static func popToRootView() {
+        findNavigationController(viewController: UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.rootViewController)?
+            .popToRootViewController(animated: true)
     }
-
-    if let navigationController = viewController as? UINavigationController {
-      return navigationController
+    static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
+        guard let viewController = viewController else {
+            return nil
+        }
+        if let navigationController = viewController as? UINavigationController {
+            return navigationController
+        }
+        for childViewController in viewController.children {
+            return findNavigationController(viewController: childViewController)
+        }
+        return nil
     }
-
-    for childViewController in viewController.children {
-      return findNavigationController(viewController: childViewController)
-    }
-
-    return nil
-  }
 }

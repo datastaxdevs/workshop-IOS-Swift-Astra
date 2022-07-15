@@ -56,13 +56,13 @@ struct AddUsers: View {
                     errMsgColor = Color.green
                     return
                 }
-                //POST ORDER AND VIEW SUMMARY
+                //post order and view summary
                 dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
                 postRequest(order: order)
                 errMsgColor = Color.green
-                errMsg = "Order posted to db"
+                errMsg = "Order posted to db."
                 user = ""
                 items.removeAll()
                 currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
@@ -86,7 +86,7 @@ struct AddUsers: View {
                         return
                     }
                     if (i==prices.count){
-                        errMsg = "Order info is complete. Click on Post Order "
+                        errMsg = "Order info is complete. Click on Post Order."
                         errMsgColor = Color.green
                         return
                     }
@@ -97,12 +97,11 @@ struct AddUsers: View {
                     }
                     items.append(Item(price: prices[i], users: users))
                     users.removeAll()
-                    //UPDATE currentOrder
-                    //RE COMPUTE WHOLE STRING EVERY TIME NEXT PRICE IS CLICKED HERE (until better solution is found)
+                    //update currentOrder
                     var str = "Current Order:\nUserName = \(userName)\n"
                     for j in 0..<prices.count {
                         str += "Price: \(prices[j]) Users: "
-                        if (j<=i){//equal to if (j<items.count)
+                        if (j<=i){
                             for k in 0..<items[j].users.count {
                                 str += "\(items[j].users[k]) "
                             }
@@ -113,11 +112,11 @@ struct AddUsers: View {
                     }
                     currentOrder = str
                     str.removeAll()
-                    errMsg = "Users added to price \(prices[i]) successfully"
+                    errMsg = "Users added to price \(prices[i]) successfully."
                     errMsgColor = Color.green
                     i = i+1
                     if (i==prices.count){
-                        errMsg = "Order info is complete. Click on Post Order "
+                        errMsg = "Order info is complete. Click on Post Order."
                         errMsgColor = Color.green
                     }
                 }
@@ -140,24 +139,24 @@ struct AddUsers: View {
                     }
                     if (i==prices.count){return}
                     if (user.count==0){
-                        errMsg = "User cannot be empty"
+                        errMsg = "User cannot be empty."
                         errMsgColor = Color.red
                         return
                     }
                     if (getUserInfoForUserName(userName: user).count==0){
                         //no user info -> no account
                         errMsgColor = Color.red
-                        errMsg = "No account found for: \(user)"
+                        errMsg = "No account found for: \(user)."
                         return
                     }
                     let ind = users.firstIndex(of: user)
                     if (ind==nil){
                         users.append(user)
                         errMsgColor = Color.green
-                        errMsg = "User \(user) added"
+                        errMsg = "User \(user) added."
                     } else {
                         errMsgColor = Color.red
-                        errMsg = "\(user) already in list"
+                        errMsg = "\(user) already in list."
                     }
                     user = ""
                 }
@@ -172,24 +171,24 @@ struct AddUsers: View {
                     }
                     if (i==prices.count){return}
                     if (user.count==0){
-                        errMsg = "User cannot be empty"
+                        errMsg = "User cannot be empty."
                         errMsgColor = Color.red
                         return
                     }
                     if (getUserInfoForUserName(userName: user).count==0){
                         //no user info -> no account
                         errMsgColor = Color.red
-                        errMsg = "No account found for: \(user)"
+                        errMsg = "No account found for: \(user)."
                         return
                     }
                     let ind = users.firstIndex(of: user)
                     if !(ind==nil){
                         users.remove(at: ind!)
                         errMsgColor = Color.green
-                        errMsg = "User \(user) removed"
+                        errMsg = "User \(user) removed."
                     } else {
                         errMsgColor = Color.red
-                        errMsg = "\(user) not in list"
+                        errMsg = "\(user) not in list."
                     }
                     user = ""
                 }
@@ -199,12 +198,11 @@ struct AddUsers: View {
             }
         }
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))
-        
     }
 }
 
 struct AddUsers_Previews: PreviewProvider {
     static var previews: some View {
-        AddUsers(userName: "userName", prices: [0.1, 2.4])
+        AddUsers(userName: "testUserName", prices: [0.1, 2.4])
     }
 }

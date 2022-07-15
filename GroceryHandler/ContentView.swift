@@ -27,7 +27,7 @@ struct ContentView: View {
                 //COULD HAVE IMAGE OF LOGO HERE
                 Spacer()
                 HStack{
-                    TextField("Username: ", text: $userName)
+                    TextField("Username:", text: $userName)
                         .textFieldStyle(CustomTextField())
                         .onSubmit(){
                             shared.errorMessage = ""
@@ -35,7 +35,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 HStack{
-                    TextField("Password: ", text: $password)
+                    TextField("Password:", text: $password)
                         .textFieldStyle(CustomTextField())
                         .onSubmit(){
                             shared.errorMessage = ""
@@ -51,10 +51,10 @@ struct ContentView: View {
                 Button("Sign in"){
                     if (userName.count==0 || password.count==0){
                         shared.errMsgColor = Color.red
-                        shared.errorMessage = "Username and password cannot be empty"
+                        shared.errorMessage = "Username and password cannot be empty."
                         return
                     }
-                    print("SIGNING IN with \(userName) and \(password)")
+                    print("Signing in with \(userName) and \(password)")
                     if (signIn(userName:userName, password:password)){
                         self.signin = true
                     }
@@ -66,12 +66,10 @@ struct ContentView: View {
                     Button("Create Account"){
                         if (userName.count==0 || password.count==0){
                             shared.errMsgColor = Color.red
-                            shared.errorMessage = "Username and password cannot be empty"
+                            shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
-                        print("Creating account with \(userName) and \(password)")
                         createAccount(userName: userName, password: password)
-                        print("Done created account")
                     }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
@@ -79,7 +77,7 @@ struct ContentView: View {
                     Button("Delete Account"){
                         if (userName.count==0 || password.count==0){
                             shared.errMsgColor = Color.red
-                            shared.errorMessage = "Username and password cannot be empty"
+                            shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
                         deleteAccount(userName: userName, password: password)
@@ -91,7 +89,7 @@ struct ContentView: View {
                     Button("Change Password"){
                         if (userName.count==0 || password.count==0){
                             shared.errMsgColor = Color.red
-                            shared.errorMessage = "Username and password cannot be empty"
+                            shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
                         if (signIn(userName:userName, password:password)){
@@ -101,14 +99,14 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                     Button("DEV"){
-                    //   print("DEV")
-                    // populateOrdersDB(numNewOrders: 500)
-                         printUserInfoFor(userName:"Andy1")
-                    }
-                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    //.padding(.all, 20)
-                    //WILL GET RID OF BUTTON BUT IT IS PRACTICAL FOR DEVELOPMENT
+                    /*Button("DEV"){
+                        print("DEV")
+                        //This is where you can test functions by running the app and clicking on this button
+                        //populateOrdersDB(numNewOrders: 500)
+                        //printUserInfoFor(userName:"Andy1")
+                     }
+                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                     .padding(.all, 20)*/
                 }
                 Spacer()
             }.background(Color(red: 0.67, green: 0.87, blue: 0.9))

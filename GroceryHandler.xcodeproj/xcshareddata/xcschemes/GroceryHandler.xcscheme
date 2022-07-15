@@ -86,6 +86,11 @@
             value = "REPLACE_ME"
             isEnabled = "YES">
          </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "ASTRA_DB_KEYSPACENAME"
+            value = "REPLACE_ME"
+            isEnabled = "YES">
+         </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction

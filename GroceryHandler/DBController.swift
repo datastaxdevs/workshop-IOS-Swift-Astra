@@ -5,7 +5,6 @@
 //  Created by Victor Micha on 6/20/22.
 //
 //handles interaction to astra database
-import Foundation
 import SwiftUI
 
 class ErrorManager: ObservableObject {
@@ -31,19 +30,22 @@ func signIn(userName:String, password:String)->Bool{
     if (dict.count==0){
         shared.errMsgColor = Color.red
         shared.errorMessage = "There is no account with username \(userName)."
+        print("There is no account with username \(userName).")
         return false
     }
     if (dict[dict.startIndex].value.password==password){//dict should have only one entry since usernames are unique
         return true
     } else {
         shared.errMsgColor = Color.red
-        shared.errorMessage = "Incorrect password."// Could not sign in."commented because sign in func is also used for changing password
+        shared.errorMessage = "Incorrect password."
+        print("Incorrect password.")
         return false
     }
 }
 
 //for a user to sign up (create account)
 func createAccount(userName:String, password:String){
+    print("Creating account for \(userName).")
     let userInfoDict = getUserInfoForUserName(userName: userName)
     if (userInfoDict.count>0){
         shared.errMsgColor = Color.red
@@ -54,11 +56,11 @@ func createAccount(userName:String, password:String){
     postRequest(userInfo: UserInfo(userName: userName, password: password))
     shared.errMsgColor = Color.green
     shared.errorMessage = "Account created successfully."
+    print("Account created successfully.")
 }
 
 func deleteAccount(userName:String, password:String){
-    print("Deleting acount... Please wait")
-    //get user info and doc id from astra db
+    print("Deleting acount... Please wait.")
     let userInfoDB = getUserInfoForUserName(userName: userName)
     //returns dict of [docID:UserInfo]
     //because doc id is needed to delete from db
@@ -68,6 +70,8 @@ func deleteAccount(userName:String, password:String){
         print("Cannot delete account with username: \(userName) because none exists.")
         return
     }
+    //userInfoDB.count is either 0 (no account exists for userName)
+    //or 1 (1 account exists for userName) because userNames are unique
     //userInfoDB[userInfoDB.startIndex].value -> a userInfo
     //userInfoDB[userInfoDB.startIndex].key -> docID string
     if (userInfoDB[userInfoDB.startIndex].value.password==password){
@@ -80,7 +84,8 @@ func deleteAccount(userName:String, password:String){
     }
     deleteOrdersForUserName(userName:userName)
     shared.errMsgColor = Color.green
-    shared.errorMessage = "Account deleted successfully"
+    shared.errorMessage = "Account deleted successfully."
+    print("Account deleted successfully.")
 }
 
 func deleteOrdersForUserName(userName:String){
@@ -104,8 +109,9 @@ func computeAllOrdersFor(userName:String){
     }
 }
 
+//create lots of fake accounts to test db
 func populateUserInfoDB(){
-    createAccount(userName: "Michael1", password: "thatswhatshesaid")
+    createAccount(userName: "Michael1", password: "manager")
     createAccount(userName: "Dwight1", password: "bearsbeetsbattlestargallactica")
     createAccount(userName: "Jim1", password: "beesley!")
     createAccount(userName: "Pam1", password: "sprinkleofcinnamon")
@@ -130,6 +136,8 @@ func populateUserInfoDB(){
     createAccount(userName: "Joe1", password: "ceoofsabre")
 }
 
+//populates orders db with orders given from a set of usernames
+//same set of usernames in func populateUserInfoDB()
 func populateOrdersDB(numNewOrders:Int){
     for _ in 0..<numNewOrders{
         let order = getRandomOrder(userNames: Array(getRandomSetOfUserNames()))
@@ -137,8 +145,11 @@ func populateOrdersDB(numNewOrders:Int){
     }
 }
 
-//return dict of [docID:UserInfo] of size 1 if there exists a userInfo
-//for userName or of size 0 otherwise
+/*
+ return dict of [docID:UserInfo] of
+ size 1 if there exists a userInfo
+ for userName or of size 0 otherwise
+ */
 func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     getRequestUserInfo(userName:userName)
     //userInfo isn't fetched even after getRequestUserInfo is finished -> async call
@@ -146,15 +157,16 @@ func getUserInfoForUserName(userName:String)-> [String:UserInfo]{
     while gotUserInfo==false{
         Thread.sleep(forTimeInterval: 0.001)
     }
-    //print("there are \(localUserInfoDB.count) user infos with username: \(userName)")
+    //print("There are \(localUserInfoDB.count) user infos with username: \(userName)")
     var localUserInfoDBCpy = [String:UserInfo]()
     if (localUserInfoDB.count==1){
-        //there is a user info for userName
-        print("there is a user info for \(userName)")
+        print("There is a user info for \(userName)")
         let userInf = localUserInfoDB[localUserInfoDB.startIndex].value
+        //localUserInfoDB[localUserInfoDB.startIndex].key -> docID
+        //localUserInfoDB[localUserInfoDB.startIndex].value -> UserInfo
         localUserInfoDBCpy[localUserInfoDB[localUserInfoDB.startIndex].key] = UserInfo(userName: userInf.userName, password: userInf.password)
     }
-    //reinitialize gotOrders and orders and localOrderDB
+    //reinitialize gotUserInfo and localUserInfoDB
     gotUserInfo = false
     localUserInfoDB.removeAll()
     return localUserInfoDBCpy
@@ -218,7 +230,7 @@ func getAllOrdersForUserName(userName:String)->(orders: [Order], localOrderDB: [
         return (ordersCpy, localOrderDBCpy)
     }
     while (!(pageState.isEmpty)){
-        let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20&page-state=\(pageState)"
+        let str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20&page-state=\(pageState)"
         pageState = ""//re initialize pageState
         getRequest(orderOrUserInfo: true, str: str)
         while gotOrders==false{
@@ -265,14 +277,13 @@ func getRequest(orderOrUserInfo:Bool, str:String){
              JSON data is of the form
              {“data”:
              {
-             “docID”: Order,
+             “docID”:Order,
              “docID”:Order
              }
              }
              OR (if there are more docs than <page-size> or <20>)
              {"pageState":"JDZjN2Y5MGQ5LWYyZGItNGRkNS05Mzk3LTZiNDE5NzYzNGMwZQDwf_____B_____","data":{
-             
-             “docID”: Order,
+             “docID”:Order,
              “docID”:Order
              }
              }
@@ -286,7 +297,9 @@ func getRequest(orderOrUserInfo:Bool, str:String){
             var indx = dataString.startIndex//arbitrary, val is changed in if/else statement
             if (dataString[dataString.index(dataString.startIndex, offsetBy: 2)]=="p"){
                 //there is page state
-                indx = dataString.index(dataString.startIndex, offsetBy: 14+y-1+10)
+                //length of {"pageState":"JDZjN2Y5MGQ5LWYyZGItNGRkNS05Mzk3LTZiNDE5NzYzNGMwZQDwf_____B_____","data":
+                //is 87 which is equal to 23+y
+                indx = dataString.index(dataString.startIndex, offsetBy: 23+y)
             } else {
                 //there is no page state
                 //length of {“data”: is 8
@@ -299,7 +312,7 @@ func getRequest(orderOrUserInfo:Bool, str:String){
             /*
              by now dataString is of form:
              {
-             “docID”: Order,
+             “docID”:Order,
              “docID”:Order
              } or {"docID":UserInfo}
              */
@@ -339,16 +352,15 @@ func getRequest(orderOrUserInfo:Bool, str:String){
     task.resume()
 }
 
-//sets correct value to "localUserInfoDB"
+//sets correct value to "localUserInfoDB" var
 func getRequestUserInfo(userName:String){
-    let str = "/namespaces/keyspacename1/collections/userInfo?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=1"
+    let str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/userInfo?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=1"
     getRequest(orderOrUserInfo: false, str: str)
 }
 
 //sets correct values to "orders" and "localOrderDB" vars
 func getRequestOrders(userName:String, maxNumOrders:Int){
-    //param is username of person to retrieve all orders
-    let str = "/namespaces/keyspacename1/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=\(maxNumOrders)"
+    let str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=\(maxNumOrders)"
     getRequest(orderOrUserInfo: true, str: str)
 }
 
@@ -358,7 +370,7 @@ func setOrderStatusToPaid(docID:String){
     guard let uploadData = try? encoder.encode(Paid(paid:true)) else {
         return//could not convert to type data
     }
-    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/orders/\(docID)")
+    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/orders/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
             print ("error: \(error)")
@@ -395,7 +407,7 @@ func changePassword(newPassword:String, userName:String){
     guard let uploadData = try? encoder.encode(Password(password: newPassword)) else {
         return//could not convert to type data
     }
-    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/keyspacename1/collections/userInfo/\(docID)")
+    let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/userInfo/\(docID)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
             print ("error: \(error)")
@@ -421,7 +433,7 @@ func changePassword(newPassword:String, userName:String){
 }
 
 func postRequest(uploadData:Data, collection:String){
-    let request = httpRequest(httpMethod: "POST", endUrl: "/namespaces/keyspacename1/collections/\(collection)")
+    let request = httpRequest(httpMethod: "POST", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/\(collection)")
     let task = URLSession.shared.uploadTask(with: request, from: uploadData) { data, response, error in
         if let error = error {
             print ("error: \(error)")
@@ -489,7 +501,7 @@ func getOrdersWhereTotalIs(total:Double, userName:String)->[Order]{
 }
 
 func httpRequest(httpMethod: String, endUrl: String)-> URLRequest {
-    /*code for this function is taken/copied from : https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website*/
+    /*see for details: https://developer.apple.com/documentation/foundation/url_loading_system/uploading_data_to_a_website*/
     let str = "https://"+ASTRA_DB_ID!+"-"+ASTRA_DB_REGION!+".apps.astra.datastax.com/api/rest/v2"+endUrl
     let encodedStr = str.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
     let url = URL.init(string:encodedStr)!
@@ -512,7 +524,7 @@ func deleteOrderRequest(docID:String){
 }
 
 func deleteRequest(docID:String, collectionID:String){
-    let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/keyspacename1/collections/\(collectionID)/\(docID)")
+    let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/\(collectionID)/\(docID)")
     let task = URLSession.shared.dataTask(with: request){ data, response, error in
         if let error = error {
             print ("error: \(error)")

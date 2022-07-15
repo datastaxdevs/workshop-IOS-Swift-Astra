@@ -7,14 +7,13 @@
 
 import SwiftUI
 
-//code for this view is taken/copied from https://designcode.io/swiftui-advanced-handbook-imagepicker
+//some code for this view is taken/copied from https://designcode.io/swiftui-advanced-handbook-imagepicker
 struct PictureReceipt: View {
     @State var userName:String
     @State private var image = UIImage()
     @State private var library = false
     @State private var camera = false
     @ObservedObject var pricesManager1:PricesManager = pricesManager
-    
     var body: some View {
         VStack {
             Text("Hey, \(userName)")
@@ -23,7 +22,6 @@ struct PictureReceipt: View {
                 .multilineTextAlignment(.center)
             Button("Choose photo from library"){
                 library = true
-                print("LIBRARY")
             }
             .multilineTextAlignment(.center)
             .padding(.all,5)
@@ -36,13 +34,11 @@ struct PictureReceipt: View {
                 .aspectRatio(contentMode: .fill)
             Button("Take photo"){
                 camera = true
-                print("CAMERA")
             }
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
             NavigationLink(destination: FinalizePrices(userName:userName, prices: pricesManager1.prices), isActive: $pricesManager1.getPrices){EmptyView()}
-            //pricesManager1.getPrices is set to true in getPricesAsArray func in MLTextRecognizer
             Button("Get Prices from photo"){
                 if (image.cgImage==nil){
                     print("Image can't be null")
@@ -50,6 +46,7 @@ struct PictureReceipt: View {
                 }
                 //ML HAPPENS HERE
                 getPricesAsArray(image: image)
+                //pricesManager1.getPrices is set to true in getPricesAsArray func in MLTextRecognizer.swift
             }
             .buttonStyle(CustomButton(color: Color(red: 0.6, green: 0.1, blue: 0.1)))
             .padding(.top, 20)
@@ -68,6 +65,6 @@ struct PictureReceipt: View {
 
 struct PictureReceipt_Previews: PreviewProvider {
     static var previews: some View {
-        PictureReceipt(userName:"userName")
+        PictureReceipt(userName:"testUserName")
     }
 }
