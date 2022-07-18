@@ -10,25 +10,27 @@ Build an app in Swift that connects to the Datastax Astra Database. By replicati
 This sample app is coded in Swift and was developed on the XCode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, signing in, and changing password) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer.
 
 ## Prerequisites:
-1. [Create an Astra database account:](https://auth.cloud.datastax.com/auth/realms/CloudUsers/login-actions/registration?client_id=auth-proxy&tab_id=sbXNIWyPYDw&redirect_uri=https://astra.datastax.com/welcome)
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.08.20%20AM.png)
-2. After verifying the account, click on *Create Database*:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.52.43%20AM.png)
-3. Enter a database name, keyspace name, and region. Name them whatever you like. Then click on *Create Database*
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.57.15%20AM.png)
-4. Click on *Go To Database*
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.01.41%20AM.png)
-5. In the dashboard, click on the *Connect* tab:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.04.35%20AM.png)
-6. Create an application token:
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.09.38%20AM.png)
-7. Select the role *Administrator User* then click on *Generate Token*
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.20.17%20AM.png)
-8. Make sure to copy the *Token* somewhere for later
-![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.23.58%20AM.png)
-9. Finally, [Download XCode](
+1. [Download XCode](
 https://developer.apple.com/xcode/).
 The XCode version for this application is version 13.4.1.
+It will take a while to download. While this is happening, move on to the next step.
+2. [Create an Astra database account:](https://auth.cloud.datastax.com/auth/realms/CloudUsers/login-actions/registration?client_id=auth-proxy&tab_id=sbXNIWyPYDw&redirect_uri=https://astra.datastax.com/welcome)
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.08.20%20AM.png)
+3. After verifying the account, click on *Create Database*:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.52.43%20AM.png)
+4. Enter a database name, keyspace name, and region. Name them whatever you like. Then click on *Create Database*
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.57.15%20AM.png)
+5. Click on *Go To Database*
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.01.41%20AM.png)
+6. In the dashboard, click on the *Connect* tab:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.04.35%20AM.png)
+7. Create an application token:
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.09.38%20AM.png)
+8. Select the role *Administrator User* then click on *Generate Token*
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.20.17%20AM.png)
+9. Make sure to copy the *Token* somewhere for later
+![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.23.58%20AM.png)
+
 
 
 
