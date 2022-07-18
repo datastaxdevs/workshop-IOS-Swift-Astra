@@ -53,7 +53,7 @@ This is all that is needed to strictly connect to the database. However, the sam
 ```bash
 $ cd workshop-IOS-Swift-Astra
 ```
-2. To install CocoaPods, run: 
+2. To install CocoaPods, run (if a password is required, use the one you use to log in to your laptop): 
 ```bash
 $ sudo gem install cocoapods
 ```
