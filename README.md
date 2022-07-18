@@ -37,7 +37,13 @@ It will take a while to download. While this is happening, move on to the next s
 ## How to replicate project:
 See -> [Prerequisites first](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#prerequisites)
 
-Go to the directory where you would like your project to reside. Clone the project by running:
+Go to the directory where you would like your project to reside. If you are not sure what this means, open your Terminal app:
+![](READMEPictures/Screen%20Shot%202022-07-18%20at%203.18.37%20PM.png)
+If you want your project to reside in your Desktop directory for example, type (do not include the $):
+```bash
+$ cd Desktop
+```
+Clone the project by running:
 ```bash
 $ git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
 ```
