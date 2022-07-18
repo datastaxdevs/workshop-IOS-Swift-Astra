@@ -69,7 +69,7 @@ Now the pods are installed and the project will build once opened on XCode!
 ```bash
 $ cd workshop-IOS-Swift-Astra
 ```
-2. Run these commands to remove the pods from the project:
+2. Run these commands to remove the pods from the project (if a password is required, use the one you use to log in to your laptop):
 ```bash
 $ sudo gem install cocoapods-deintegrate cocoapods-clean
 $ pod deintegrate
