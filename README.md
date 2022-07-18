@@ -76,7 +76,10 @@ $ pod deintegrate
 $ pod cache clean --all
 $ rm Podfile
 ```
-3. Make sure to comment out the *MLTextRecognizer.swift* file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully
+3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
+```swift
+getPricesAsArray(image: image)
+```
 
 ### !! Whether you chose to remove the Pods or keep them, now follow the following steps !!
 
