@@ -13,6 +13,7 @@ struct ContentView: View {
     @ObservedObject var errorManager:ErrorManager = shared
     @State private var signin = false
     @State private var changePassword = false
+    @ObservedObject var goSignedIn:GoToSignedInManager = goToSignedIn
     //https://www.hackingwithswift.com/articles/216/complete-guide-to-navigationview-in-swiftui
     var body: some View {
         NavigationView {
@@ -47,7 +48,8 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .font(.subheadline)
                     .foregroundColor(shared.errMsgColor)
-                NavigationLink(destination: SignedIn(userName: userName), isActive: $signin) { EmptyView() }
+                NavigationLink(destination: SignedIn(userName: goSignedIn.userName), isActive: $goSignedIn.goSignedIn) {EmptyView()}
+                NavigationLink(destination: SignedIn(userName: userName), isActive: $signin) {EmptyView()}
                 Button("Sign in"){
                     if (userName.count==0 || password.count==0){
                         shared.errMsgColor = Color.red

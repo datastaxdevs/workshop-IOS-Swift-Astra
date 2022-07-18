@@ -23,8 +23,10 @@ struct AddUsers: View {
     var body: some View {
         VStack{
             Button("Home"){
+                goToSignedIn.userName = userName
                 NavigationUtil.popToRootView()
                 //goes back to ContentView
+                //then to SignedIn
             }
             .buttonStyle(CustomButton(color: Color(red: 0.2, green:0.3 , blue: 0.4)))
             ScrollView{
@@ -47,7 +49,7 @@ struct AddUsers: View {
             .padding(.top, 5)
             Button("Post Order"){
                 if (i<prices.count){
-                    errMsg = "Can't post order yet. Missing users for \(prices.count-i) prices!"
+                    errMsg = "Can't post order yet. Missing users for \(prices.count-i) price(s)!"
                     errMsgColor = Color.red
                     return
                 }

@@ -72,6 +72,14 @@ let userNames = ["Michael1", "Dwight1", "Jim1", "Pam1", "Angela1", "Kevin1",
                  "Ryan1", "David1", "Gabe1", "Robert1", "Creed1", "Roy1", "Darryl1",
                  "Jan1", "Holly1", "Mose1", "Joe1"]
 
+//to go to SignedIn view from AddUsers view by clicking Home button
+class GoToSignedInManager: ObservableObject {
+    //taken/copied from https://stackoverflow.com/questions/59312795/a-state-static-property-is-being-reinitiated-without-notice
+    @Published var goSignedIn = false
+    @Published var userName = ""
+}
+var goToSignedIn = GoToSignedInManager()
+
 //this struct is taken/copied from https://www.hackingwithswift.com/quick-start/swiftui/customizing-button-with-buttonstyle
 struct CustomButton: ButtonStyle {
     let color:Color
@@ -236,12 +244,13 @@ func printOrders(orders:[Order]){
     }
 }
 
-//to go back to ContentView view from AddUsers view
+//to go back to ContentView view then SignedIn view from AddUsers view
 //code taken/copied from https://stackoverflow.com/questions/57334455/how-can-i-pop-to-the-root-view-using-swiftui/59662275#59662275
 struct NavigationUtil {
     static func popToRootView() {
         findNavigationController(viewController: UIApplication.shared.windows.filter { $0.isKeyWindow }.first?.rootViewController)?
-            .popToRootViewController(animated: true)
+            .popToRootViewController(animated: false)
+        goToSignedIn.goSignedIn = true
     }
     static func findNavigationController(viewController: UIViewController?) -> UINavigationController? {
         guard let viewController = viewController else {
