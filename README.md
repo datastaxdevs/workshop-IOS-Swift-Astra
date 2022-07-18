@@ -43,7 +43,7 @@ This is all that is needed to strictly connect to the database. However, the sam
 #### Integrate Pods in Project:
 1. In the same window, go to your project directory by running 
 ```bash
-$ cd workshop-IOS-Astra
+$ cd workshop-IOS-Swift-Astra
 ```
 2. To install CocoaPods, run: 
 ```bash
@@ -71,7 +71,7 @@ Now the pods are installed and the project will build once opened on XCode!
 #### Remove Pods from project:
 1. After cloning the git repo, go to your project directory by running:
 ```bash
-$ cd workshop-IOS-Astra
+$ cd workshop-IOS-Swift-Astra
 ```
 2. Run these commands to remove the pods from the project:
 ```bash
