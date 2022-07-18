@@ -91,7 +91,7 @@ Click on the *GroceryHandler.xcworkspace* file and select *Open*
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
 
 
-Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode. To test the app, you will have to change the environment variables in XCode. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
+Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
 After doing that, build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m). 
 
 ## How to connect to your own database in the app:
