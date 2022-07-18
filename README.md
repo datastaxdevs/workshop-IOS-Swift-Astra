@@ -89,7 +89,7 @@ Launch the XCode app and select *Open a project or file*
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
 Click on the *GroceryHandler.xcworkspace* file and select *Open*
-![](READMEPictures/Screen%20Shot%202022-07-15%20at%204.09.43%20PM.png)
+![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
 
 
 
