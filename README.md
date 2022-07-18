@@ -57,19 +57,7 @@ $ cd workshop-IOS-Swift-Astra
 ```bash
 $ sudo gem install cocoapods
 ```
-3. To edit the Podfile, run:
-```bash
-$ vim Podfile
-```
-Under  
-```
-# Pods for <APP_NAME>
-```
-add (it should already be there):
-```
-pod 'GoogleMLKit/TextRecognition','2.2.0'
-```
-4. To install the Pods directory, exit the Podfile and run:
+3. To install the Pods directory, run:
 ```bash
 $ pod install
 ```
