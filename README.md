@@ -142,6 +142,14 @@ The JSON in the image above is the following:
 ```
 The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *keyspacename1*. If you want to customize the app by creating different collections, make sure to change using search and replace (in the *DBController.swift* file) the *userInfo* and *orders* to whatever you named them.
 If you just want to test the app, you will have to create both of these collections in whatever keyspace you created.
+The JSON to create the collection *userInfo* is the following:
+```json
+{"name":"userInfo"}
+```
+The JSON to create the collection *orders* is the following:
+```json
+{"name":"orders"}
+```
 
 ### Creating your own model
 To customize your app, you will need to come up with a model of what the data will look like in the database.
