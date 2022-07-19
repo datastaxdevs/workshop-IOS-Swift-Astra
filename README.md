@@ -39,16 +39,16 @@ Go to the directory where you would like your project to reside. If you are not 
 
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%203.18.37%20PM.png)
 
-If you want your project to reside in your `Desktop` sub-directory for example, type:
+If you want your project to reside in your `Desktop` sub-directory for example, type (do not include $):
 
 ```bash
-cd Desktop
+$ cd Desktop
 ```
 
 Clone the project by running:
 
 ```bash
-git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
+$ git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
 ```
 
 This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. 
@@ -59,13 +59,13 @@ The Pods required for this are too big to be stored on Github, so either follow 
 1. In the same window, go to your project directory by running 
 
 ```bash
-cd workshop-IOS-Swift-Astra
+$ cd workshop-IOS-Swift-Astra
 ```
 
 2. To install CocoaPods, run (if a password is required, use the one you use to log in to your laptop):
 
 ```bash
-sudo gem install cocoapods
+$ sudo gem install cocoapods
 ```
 
 3. To install the Pods directory, run:
@@ -80,16 +80,16 @@ Now the pods are installed and the project will build once opened on XCode!
 1. After cloning the git repo, go to your project directory by running:
 
 ```bash
-cd workshop-IOS-Swift-Astra
+$ cd workshop-IOS-Swift-Astra
 ```
 
 2. Run these commands to remove the pods from the project (if a password is required, use the one you use to log in to your laptop):
 
 ```bash
-sudo gem install cocoapods-deintegrate cocoapods-clean
-pod deintegrate
-pod cache clean --all
-rm Podfile
+$ sudo gem install cocoapods-deintegrate cocoapods-clean
+$ pod deintegrate
+$ pod cache clean --all
+$ rm Podfile
 ```
 
 3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
