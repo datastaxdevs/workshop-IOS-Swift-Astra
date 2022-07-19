@@ -32,51 +32,68 @@ It will take a while to download. While this is happening, move on to the next s
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.23.58%20AM.png)
 
 
-
-
 ## How to replicate project:
 See -> [Prerequisites first](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#prerequisites)
 
 Go to the directory where you would like your project to reside. If you are not sure what this means, open your Terminal app:
+
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%203.18.37%20PM.png)
-If you want your project to reside in your Desktop directory for example, type (do not include the $):
+
+If you want your project to reside in your `Desktop` sub-directory for example, type:
+
 ```bash
-$ cd Desktop
+cd Desktop
 ```
+
 Clone the project by running:
+
 ```bash
-$ git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
+git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
 ```
-This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#remove-pods-from-project).
+
+This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. 
+
+The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#remove-pods-from-project).
+
 #### Integrate Pods in Project:
 1. In the same window, go to your project directory by running 
+
 ```bash
-$ cd workshop-IOS-Swift-Astra
+cd workshop-IOS-Swift-Astra
 ```
-2. To install CocoaPods, run (if a password is required, use the one you use to log in to your laptop): 
+
+2. To install CocoaPods, run (if a password is required, use the one you use to log in to your laptop):
+
 ```bash
-$ sudo gem install cocoapods
+sudo gem install cocoapods
 ```
+
 3. To install the Pods directory, run:
+
 ```bash
 $ pod install
 ```
 
 Now the pods are installed and the project will build once opened on XCode!
 
-#### Remove Pods from project:
+#### To remove Pods from project:
 1. After cloning the git repo, go to your project directory by running:
+
 ```bash
-$ cd workshop-IOS-Swift-Astra
+cd workshop-IOS-Swift-Astra
 ```
+
 2. Run these commands to remove the pods from the project (if a password is required, use the one you use to log in to your laptop):
+
 ```bash
-$ sudo gem install cocoapods-deintegrate cocoapods-clean
-$ pod deintegrate
-$ pod cache clean --all
-$ rm Podfile
+sudo gem install cocoapods-deintegrate cocoapods-clean
+pod deintegrate
+pod cache clean --all
+rm Podfile
 ```
+
 3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
+
 ```swift
 getPricesAsArray(image: image)
 ```
@@ -90,8 +107,10 @@ getPricesAsArray(image: image)
 2. Click on the *GroceryHandler.xcworkspace* file and select *Open*
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
 
-3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode. 
+3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode.
+
 4. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
+
 5. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m).
 
 That's it! You can now create accounts and post orders to your database! If you would like to populate your database with fake accounts and random orders, uncomment the DEV button in the *ContentView.swift* file by removing the */** and **/* that surrounds this code:
@@ -151,17 +170,17 @@ You can access Swagger UI from the Astra website:
 To create an empty collection named *newCol* in *keyspacename1* for example:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.48.09%20AM.png)
 
-The JSON in the image above is the following:
-```json
-{"name":"newCol"}
-```
 The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *keyspacename1*. If you want to customize the app by creating different collections, make sure to change using search and replace (in the *DBController.swift* file) the *userInfo* and *orders* to whatever you named them.
+
 If you just want to test the app, you will have to create both of these collections in whatever keyspace you created.
+
 The JSON to create the collection *userInfo* is the following:
+
 ```json
 {"name":"userInfo"}
 ```
 The JSON to create the collection *orders* is the following:
+
 ```json
 {"name":"orders"}
 ```
@@ -169,13 +188,16 @@ The JSON to create the collection *orders* is the following:
 ### Creating your own model
 To customize your app, you will need to come up with a model of what the data will look like in the database.
 Here is what the model looks like for a *UserInfo*: (this can be found in the *GroceryHandlerApp.swift* file)
+
 ```swift
 struct UserInfo : Codable {
     let userName : String
     let password : String
 }
 ```
+
 Here is what the model looks like for an order:
+
 ```swift
 struct Order : Codable {
     let userName : String
@@ -189,7 +211,6 @@ struct Item : Codable {
     let users : [String]
 }
 ```
-
 
 The *Codable* makes it so that instances of these structs can be converted to JSON data objects, which is needed to post them to the database.
 To be explicitly clear, an *Order* is posted to the collection *orders* and a *UserInfo* is posted to the collection *userInfo*.
