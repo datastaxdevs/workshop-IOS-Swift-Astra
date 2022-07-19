@@ -84,15 +84,15 @@ getPricesAsArray(image: image)
 ### !! Whether you chose to remove the Pods or keep them, now follow the following steps !!
 
 
-Launch the XCode app and select *Open a project or file*
+1. Launch the XCode app and select *Open a project or file*
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
-Click on the *GroceryHandler.xcworkspace* file and select *Open*
+2. Click on the *GroceryHandler.xcworkspace* file and select *Open*
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
 
-
-Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
-After doing both of those things, build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m). 
+3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode. 
+4. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
+5. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m). 
 
 ## How to connect to your own database in the app:
 If you would like to connect to your Astra DB from this app, you will need to change these environment variables in XCode:
