@@ -104,8 +104,8 @@ struct ContentView: View {
                     /*Button("DEV"){
                         print("DEV")
                         //This is where you can test functions by running the app and clicking on this button
-                        //populateOrdersDB(numNewOrders: 500)
-                        //printUserInfoFor(userName:"Andy1")
+                        populateUserInfoDB()
+                        populateOrdersDB(numNewOrders: 500)
                      }
                      .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                      .padding(.all, 20)*/
