@@ -111,7 +111,10 @@ getPricesAsArray(image: image)
 
 4. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
 
-5. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m).
+5. Make sure that the app will run on the iPhone 13 Pro simulator:
+![](READMEPictures/Screen%20Shot%202022-07-19%20at%201.36.11%20PM.png)
+
+6. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>. [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m).
 
 That's it! You can now create accounts and post orders to your database! If you would like to populate your database with fake accounts and random orders, uncomment the DEV button in the *ContentView.swift* file by removing the */** and **/* that surrounds this code:
 ```swift
