@@ -91,8 +91,8 @@ func deleteAccount(userName:String, password:String){
 func deleteOrdersForUserName(userName:String){
     //get all orders for username and get all their DOC IDs
     //then go through each ID and delete
-    let localOrderDB = getAllOrdersForUserName(userName: userName).localOrderDB//get doc ID because can only delete from database with doc ID
-    for (docID, _) in localOrderDB {
+    let localOrderDB1 = getAllOrdersForUserName(userName: userName).localOrderDB//get doc ID because can only delete from database with doc ID
+    for (docID, _) in localOrderDB1 {
         deleteOrderRequest(docID: docID)
     }
 }
