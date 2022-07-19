@@ -76,7 +76,7 @@ $ pod install
 
 Now the pods are installed and the project will build once opened on XCode!
 
-#### To remove Pods from project:
+#### Remove Pods from project:
 1. After cloning the git repo, go to your project directory by running:
 
 ```bash
