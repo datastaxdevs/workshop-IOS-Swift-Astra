@@ -226,6 +226,11 @@ To be explicitly clear, an *Order* is posted to the collection *orders* and a *U
 ### Interested in using the ML in your own app?
 [Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and/or look at the *MLTextRecognizer.swift* file
 
+### Intro to Document API
+Using the Document API for Astra means that data is stored in *keyspaces*. A *keyspace* can have multiple *collections* and a *collection* stores a list of *JSON documents*.
+The picture below gives a graphical view of how data is stored for this sample app. There is only one *keyspace* and two *collections* A JSON doc can be identified by its orange color.
+![](READMEPictures/Screen%20Shot%202022-07-20%20at%2010.35.16%20AM.png)
+
 ### For beginners to databases:
 The following will help you become comfortable with HTTP requests, URLs, and JSON.
 
