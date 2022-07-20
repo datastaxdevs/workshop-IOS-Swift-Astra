@@ -9,6 +9,11 @@ Build an app in Swift that connects to the Datastax Astra Database. By replicati
 ## About:
 This sample app is coded in Swift and was developed on the XCode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, signing in, and changing password) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer.
 
+## For beginners:
+
+If you are new to databases, [click here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#for-beginners-to-databases).
+If you are new to the Document API, [click here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#intro-to-document-api).
+
 ## Prerequisites:
 1. [Download XCode](
 https://developer.apple.com/xcode/).
