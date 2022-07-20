@@ -121,7 +121,6 @@ getPricesAsArray(image: image)
 
 6. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>.
 An iPhone Simulator window should pop up:
-
 ![](READMEPictures/Screen%20Shot%202022-07-20%20at%2011.20.18%20AM.png)
 
 [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device instead. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m).
