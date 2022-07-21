@@ -7,7 +7,7 @@
 Build an app in Swift that connects to the Datastax Astra Database. By replicating this project, you will have an IOS app with fully functional backend and frontend.
 
 ## About:
-This sample app is coded in Swift and was developed on the XCode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, signing in, and changing password) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer.
+This sample app is coded in Swift and was developed on the Xcode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, deleting accounts, signing in, and changing password) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders. GroceryHandler is an application for facilitating the accounting of splitting expenses with others. For example, if roommates buy groceries together in one order, this app would be able to indicate how much each person owes the buyer.
 
 ## For beginners:
 
@@ -15,9 +15,9 @@ If you are new to databases, [click here](https://github.com/datastaxdevs/worksh
 If you are new to the Document API, [click here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#intro-to-document-api).
 
 ## Prerequisites:
-1. [Download XCode](
+1. [Download Xcode](
 https://developer.apple.com/xcode/).
-The XCode version for this application is version 13.4.1.
+The Xcode version for this application is version 13.4.1.
 It will take a while to download. While this is happening, move on to the next step.
 2. [Create an Astra database account:](https://auth.cloud.datastax.com/auth/realms/CloudUsers/login-actions/registration?client_id=auth-proxy&tab_id=sbXNIWyPYDw&redirect_uri=https://astra.datastax.com/welcome)
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.08.20%20AM.png)
@@ -79,7 +79,7 @@ $ sudo gem install cocoapods
 $ pod install
 ```
 
-Now the pods are installed and the project will build once opened on XCode!
+Now the pods are installed and the project will build once opened on Xcode!
 
 #### Remove Pods from project:
 1. After cloning the git repo, go to your project directory by running:
@@ -97,7 +97,7 @@ $ pod cache clean --all
 $ rm Podfile
 ```
 
-3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in XCode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
+3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in Xcode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
 
 ```swift
 getPricesAsArray(image: image)
@@ -106,20 +106,20 @@ getPricesAsArray(image: image)
 ### !! Whether you chose to remove the Pods or keep them, now follow the following steps !!
 
 
-1. Launch the XCode app and select *Open a project or file*
+1. Launch the Xcode app and select *Open a project or file*
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.45.29%20PM.png)
 
 2. Click on the *GroceryHandler.xcworkspace* file and select *Open*
 ![](READMEPictures/Screen%20Shot%202022-07-18%20at%2011.24.10%20AM.png)
 
-3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in XCode.
+3. Now make sure the project builds successfully by doing <kbd>command</kbd> + <kbd>B</kbd> in Xcode.
 
-4. To test the app, you will have to change the environment variables in XCode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
+4. To test the app, you will have to change the environment variables in Xcode and create the collections *orders* and *userInfo*. The instructions can be found [here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#how-to-connect-to-your-own-database-in-the-app).
 
 5. Make sure that the app will run on the iPhone 13 Pro Simulator:
 ![](READMEPictures/Screen%20Shot%202022-07-19%20at%201.36.11%20PM.png)
 
-6. Build the project and run the app by clicking the big play button at the top left of the XCode window or by doing <kbd>command</kbd> + <kbd>R</kbd>.
+6. Build the project and run the app by clicking the big play button at the top left of the Xcode window or by doing <kbd>command</kbd> + <kbd>R</kbd>.
 An iPhone Simulator window should pop up:
 ![](READMEPictures/Screen%20Shot%202022-07-20%20at%2011.20.18%20AM.png)
 
@@ -141,14 +141,14 @@ Run the app on your phone and click this button!
 
 
 ## How to connect to your own database in the app:
-If you would like to connect to your Astra DB from this app, you will need to change these environment variables in XCode:
+If you would like to connect to your Astra DB from this app, you will need to change these environment variables in Xcode:
 ```
 ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN, ASTRA_DB_KEYSPACENAME
 ```
 The *ASTRA_DB_ID* can be found in the dashboard of the astra website:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%204.17.34%20PM.png)
 
-To change the values of the environment variables in XCode, first click on *Edit Scheme...*
+To change the values of the environment variables in Xcode, first click on *Edit Scheme...*
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.25.48%20AM.png)
 
 This will open the following window in which you can change the values of the environment variables:
@@ -170,7 +170,7 @@ public var ASTRA_DB_KEYSPACENAME:String? {
     ProcessInfo.processInfo.environment["ASTRA_DB_KEYSPACENAME"]
 }
 ```
-XCode sets up the environment variables, which means that the app can only be run from XCode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
+Xcode sets up the environment variables, which means that the app can only be run from Xcode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
 
 
 Now you should create your own collection using Swagger UI:
