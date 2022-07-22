@@ -273,16 +273,13 @@ We can perform HTTP requests in the terminal app using a command line tool calle
 
 Let's go through a few examples. 
 
-#### 1. How to GET all orders from the collection *orders* in the keyspace *ASTRA_DB_KEYSPACENAME* for the username *Andy1*:
+#### 1. How to GET all orders (max of 20) from the collection *orders* in the keyspace *ASTRA_DB_KEYSPACENAME* for the username *Andy1*:
 
 Notice that ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN, ASTRA_DB_KEYSPACENAME need to be replaced by their correct values depending on the database itself.
 Also the collection “orders” has to have been created in your database.
 
 ```bash
-$ curl -X 'GET'   
-    'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/orders?where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20'   
-    -H 'accept: application/json'   
-    -H 'X-Cassandra-Token: ASTRA_DB_TOKEN'
+$ curl -X 'GET' 'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/orders?where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20' -H 'accept: application/json' -H 'X-Cassandra-Token: ASTRA_DB_TOKEN'
 ```
 
 As we can see, the HTTP method (GET), URL, query string, and headers (-H) are all there.
@@ -304,10 +301,7 @@ The header *X-Cassandra-Token: ASTRA_DB_TOKEN* is to specify the token generated
 Notice that the collection *userInfo* has to have been created in your database.
 
 ```bash
-$ curl -X 'GET'   
-    'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/userInfo?where=\{"userName":\{"$eq":"Andy1"\}\}'   
-    -H 'accept: application/json'   
-    -H 'X-Cassandra-Token: ASTRA_DB_TOKEN'
+$ curl -X 'GET' 'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/userInfo?where=\{"userName":\{"$eq":"Andy1"\}\}' -H 'accept: application/json' -H 'X-Cassandra-Token: ASTRA_DB_TOKEN'
 ```
 
 Notice there are only 2 differences between this cURL command and the one from the first example: There is no *page-size* (since there is a max of 1 user info per person no need to specify how many docs we want to retrieve) and the collection-id is changed from *orders* to *userInfo*.
@@ -321,12 +315,7 @@ The JSON that is returned is the following:
 #### 3. How to POST a new user info with username *testUsername* and password *testPassword* in the *userInfo* collection in the keyspace *ASTRA_DB_KEYSPACENAME*:
 
 ```bash
-$ curl -X 'POST'   
-    'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/userInfo'   
-    -H 'accept: application/json'   
-    -H 'X-Cassandra-Token: ASTRA_DB_TOKEN' 
-    -H 'Content-Type: application/json' 
-    --data '
+$ curl -X 'POST' 'https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/userInfo' -H 'accept: application/json' -H 'X-Cassandra-Token: ASTRA_DB_TOKEN' -H 'Content-Type: application/json' --data '
     {
         "userName":"testUsername",
         "password":"testPassword"
@@ -339,7 +328,7 @@ There is also an additional header *Content-Type: application/json* which is to 
 
 The data itself is passed after the *--data*
 
-This cURL command can be used to POST and order as well. All that has to be changed is the collection-id from *userInfo* to *orders* as well as the data itself.
+This cURL command can be used to POST an order as well. All that has to be changed is the collection-id from *userInfo* to *orders* as well as the data itself.
 
 By now you should be able to perform HTTP requests and interact with your Astra Database from the command line. Doing this from a Swift app is very similar so understanding the cURL commands is going to be extremely helpful.
 
