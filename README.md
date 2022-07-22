@@ -295,14 +295,14 @@ Notice that the collection “orders” has to have been created in your databas
 
 Run this command in your Terminal:
 ```bash
-curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/orders?'where=\{"userName":\{"$eq":"Andy1"\}\}'&page-size=20" -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
+curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/orders"'?where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20' -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
 ```
 
 As we can see, the HTTP method (GET), URL, query string, and headers (-H) are all there.
 
 The query string is : 
 ```
-'where=\{"userName":\{"$eq":"Andy1"\}\}'&page-size=20
+where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20
 ```
 
 *where* and *page-size* are parameters. The *&* is a query string separator to pass multiple parameters in the URL.
@@ -318,7 +318,7 @@ Notice that the collection *userInfo* has to have been created in your database.
 
 Run this command in your Terminal:
 ```bash
-curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/userInfo?'where=\{"userName":\{"$eq":"Andy1"\}\}'" -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
+curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/userInfo"'?where=\{"userName":\{"$eq":"Andy1"\}\}' -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
 ```
 
 Notice there are only 2 differences between this cURL command and the one from the first example: There is no *page-size* (since there is a max of 1 user info per person no need to specify how many docs we want to retrieve) and the collection-id is changed from *orders* to *userInfo*.
