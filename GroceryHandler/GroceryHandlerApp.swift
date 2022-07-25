@@ -16,6 +16,9 @@ struct GroceryHandlerApp: App {
     }
 }
 
+typealias DictOrder = [String:Order]
+typealias DictUserInfo = [String:UserInfo]
+
 //environment variables https://blog.eidinger.info/use-environment-variables-from-env-file-in-a-swift-package
 public var ASTRA_DB_ID:String? {
     ProcessInfo.processInfo.environment["ASTRA_DB_ID"]
@@ -47,22 +50,10 @@ struct UserInfo : Codable {
     let password : String
 }
 
-//structs used to PATCH -> change paid status or change password
-struct Paid :Codable {
-    var paid :Bool
-}
+//struct used to PATCH -> change password
 struct Password: Codable{
     var password:String
 }
-
-//these vars are global because getRequest func has async call
-var orders = [Order]()
-var gotOrders = false
-var localOrderDB = [String:Order]()
-var gotUserInfo = false
-var localUserInfoDB = [String:UserInfo]()
-
-var pageState = ""//pageState is initialized as empty on purpose, see getAllOrdersForUserName
 
 let dateFormatter = DateFormatter()
 
@@ -177,19 +168,23 @@ func getRandomOrder(userNames:[String])->Order{
     return order
 }
 
-func printAllOrdersFor(userName:String){
-    let orders1 = getAllOrdersForUserName(userName: userName).orders
+func printAllOrdersFor(userName:String) async throws{
+    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
     printOrders(orders: orders1)
     print("There are \(orders1.count) orders.")
 }
 
-func printUserInfoFor(userName:String){
-    let userInfoDict1 = getUserInfoForUserName(userName: userName)
-    if (userInfoDict1.count==0){
+func printUserInfoFor(userName:String)async throws{
+    let (userInfoDict, noError) = try await getUserInfo(userName:userName)
+    if (noError==false){
+        print("Error occured while fetching user info")
+        return
+    }
+    if (userInfoDict.count==0){
         print("No account with username: \(userName)")
         return
     }
-    let userInfo = userInfoDict1[userInfoDict1.startIndex].value
+    let userInfo = userInfoDict[userInfoDict.startIndex].value
     print("Username: \(userInfo.userName), Password: \(userInfo.password)")
 }
 

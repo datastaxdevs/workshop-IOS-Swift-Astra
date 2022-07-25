@@ -40,7 +40,6 @@ struct PictureReceipt: View {
             .multilineTextAlignment(.center)
             .padding(.all,5)
             .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-           // NavigationLink(destination: FinalizePrices(userName:userName, prices: pricesManager1.prices), isActive: $pricesManager1.getPrices){EmptyView()}
             NavigationLink(destination: FinalizePrices(userName:userName, prices: prices), isActive: $gotPrices){EmptyView()}
             Button("Get Prices from photo"){
                 if (image.cgImage==nil){
@@ -52,7 +51,6 @@ struct PictureReceipt: View {
                     prices = try await getPricesAsArray(image: image)
                     gotPrices = true
                 }
-                //pricesManager1.getPrices is set to true in getPricesAsArray func in MLTextRecognizer.swift
             }
             .buttonStyle(CustomButton(color: Color(red: 0.6, green: 0.1, blue: 0.1)))
             .padding(.top, 20)

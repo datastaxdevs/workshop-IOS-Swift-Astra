@@ -74,7 +74,7 @@ struct ContentView: View {
                             return
                         }
                         Task{
-                        try await createAccount(userName: userName, password: password)
+                            try await createAccount(userName: userName, password: password)
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -87,7 +87,7 @@ struct ContentView: View {
                             return
                         }
                         Task{
-                        try await deleteAccount(userName: userName, password: password)
+                            try await deleteAccount(userName: userName, password: password)
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -109,27 +109,16 @@ struct ContentView: View {
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    Button("DEV"){
+                    /*Button("DEV"){
                         print("DEV")
                         //This is where you can test functions by running the app and clicking on this button
-                        //populateUserInfoDB()
-                        //populateOrdersDB(numNewOrders: 500)
                         Task{
-                            //let str = try await postRequest(userInfo: UserInfo(userName: "newname", password: "newpasssword"))
-                            //let str = try await postRequest(order: getRandomOrder(userNames: Array( getRandomSetOfUserNames())))
-                            //let str = try await getUserInfo(userName:"Gabe1")
-                            let (dic, noError) = try await getUserInfo(userName:"Michael1")
-                            if (noError==true){
-                                print("No error")
-                                print(dic.count)
-                                print("Username: \(dic[dic.startIndex].value.userName)")
-                                print("Passowrd: \(dic[dic.startIndex].value.password)")
-                            }
-                            //print("Str: \(str)")
+                            try await populateUserInfoDB()
+                            try await populateOrdersDB(numNewOrders: 300)
                         }
                     }
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    .padding(.all, 20)
+                    .padding(.all, 20)*/
                 }
                 Spacer()
             }.background(Color(red: 0.67, green: 0.87, blue: 0.9))

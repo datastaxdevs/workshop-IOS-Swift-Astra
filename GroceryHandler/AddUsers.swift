@@ -48,27 +48,29 @@ struct AddUsers: View {
             .foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.9))
             .padding(.top, 5)
             Button("Post Order"){
-                if (i<prices.count){
-                    errMsg = "Can't post order yet. Missing users for \(prices.count-i) price(s)!"
-                    errMsgColor = Color.red
-                    return
-                }
-                if (orderPosted){
-                    errMsg = "Order already posted!"
+                Task{
+                    if (i<prices.count){
+                        errMsg = "Can't post order yet. Missing users for \(prices.count-i) price(s)!"
+                        errMsgColor = Color.red
+                        return
+                    }
+                    if (orderPosted){
+                        errMsg = "Order already posted!"
+                        errMsgColor = Color.green
+                        return
+                    }
+                    //post order and view summary
+                    dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
+                    let date = Date()
+                    let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
+                    print(try await postRequest(order: order))
                     errMsgColor = Color.green
-                    return
+                    errMsg = "Order posted to db."
+                    user = ""
+                    items.removeAll()
+                    currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
+                    orderPosted = true
                 }
-                //post order and view summary
-                dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
-                let date = Date()
-                let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                //UNCOMMENTpostRequest(order: order)
-                errMsgColor = Color.green
-                errMsg = "Order posted to db."
-                user = ""
-                items.removeAll()
-                currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
-                orderPosted = true
             }
             .padding(.all,15)
             .buttonStyle(CustomButton(color:Color(red: 0.3, green: 0.7, blue: 0.4)))
@@ -134,33 +136,37 @@ struct AddUsers: View {
                 .textFieldStyle(CustomTextField())
             HStack{
                 Button("Add User"){
-                    if (orderPosted){
-                        errMsg = "Order already posted!"
-                        errMsgColor = Color.green
-                        return
+                    Task{
+                        if (orderPosted){
+                            errMsg = "Order already posted!"
+                            errMsgColor = Color.green
+                            return
+                        }
+                        if (i==prices.count){return}
+                        if (user.count==0){
+                            errMsg = "User cannot be empty."
+                            errMsgColor = Color.red
+                            return
+                        }
+                        let (dict, noError) = try await getUserInfo(userName:user)
+                        if (noError==true && dict.count==0){
+                            //no user info -> no account
+                            errMsgColor = Color.red
+                            print("NOT HERE")
+                            errMsg = "No account found for: \(user)."
+                            return
+                        }
+                        let ind = users.firstIndex(of: user)
+                        if (ind==nil){
+                            users.append(user)
+                            errMsgColor = Color.green
+                            errMsg = "User \(user) added."
+                        } else {
+                            errMsgColor = Color.red
+                            errMsg = "\(user) already in list."
+                        }
+                        user = ""
                     }
-                    if (i==prices.count){return}
-                    if (user.count==0){
-                        errMsg = "User cannot be empty."
-                        errMsgColor = Color.red
-                        return
-                    }
-                    if (getUserInfoForUserName(userName: user).count==0){
-                        //no user info -> no account
-                        errMsgColor = Color.red
-                        errMsg = "No account found for: \(user)."
-                        return
-                    }
-                    let ind = users.firstIndex(of: user)
-                    if (ind==nil){
-                        users.append(user)
-                        errMsgColor = Color.green
-                        errMsg = "User \(user) added."
-                    } else {
-                        errMsgColor = Color.red
-                        errMsg = "\(user) already in list."
-                    }
-                    user = ""
                 }
                 .multilineTextAlignment(.center)
                 .padding(.all,5)
@@ -177,11 +183,20 @@ struct AddUsers: View {
                         errMsgColor = Color.red
                         return
                     }
-                    if (getUserInfoForUserName(userName: user).count==0){
-                        //no user info -> no account
-                        errMsgColor = Color.red
-                        errMsg = "No account found for: \(user)."
-                        return
+                    Task{
+                        let (dict, noError) = try await getUserInfo(userName:userName)
+                        if (noError==false){
+                            errMsgColor = Color.red
+                            errMsg = "Error occured while fetching user info."
+                            return
+                        } else {
+                            if (dict.count==0){
+                                //no user info -> no account
+                                errMsgColor = Color.red
+                                errMsg = "No account found for: \(user)."
+                                return
+                            }
+                        }
                     }
                     let ind = users.firstIndex(of: user)
                     if !(ind==nil){

@@ -19,6 +19,7 @@ struct SignedIn: View {
     @State private var orderStr = ""
     @State private var pastOrders = false
     @State private var pictureReceipt = false
+    @State private var orders = [Order]()
     var body: some View {
         VStack{
             Text("Hello, \(userName)")
@@ -40,25 +41,29 @@ struct SignedIn: View {
                     TextField("Enter user:", text:$user)
                         .textFieldStyle(CustomTextField())
                     Button("Add User"){
-                        if (user.count==0){
-                            errColor = Color.red
-                            errMsg = "User cannot be empty."
-                            return
+                        Task{
+                            if (user.count==0){
+                                errColor = Color.red
+                                errMsg = "User cannot be empty."
+                                return
+                            }
+                            //check that user has account and that is has not already been added to users. Then add it to users
+                            let (dict, noError) = try await getUserInfo(userName:user)
+                            if (noError==true && dict.count==0){
+                                //no user info -> no account
+                                errColor = Color.red
+                                errMsg = "No account found for: \(user)."
+                                return
+                            }
+                            if (users.contains(user)){
+                                errColor = Color.red
+                                errMsg = "\(user) already added."
+                                return
+                            }
+                            users.insert(user)
+                            errColor = Color.green
+                            errMsg = "\(user) added to users."
                         }
-                        //check that user has account and that is has not already been added to users. Then add it to users
-                        if (getUserInfoForUserName(userName: user).count==0){
-                            errColor = Color.red
-                            errMsg = "No account found for: \(user)."
-                            return
-                        }
-                        if (users.contains(user)){
-                            errColor = Color.red
-                            errMsg = "\(user) already added."
-                            return
-                        }
-                        users.insert(user)
-                        errColor = Color.green
-                        errMsg = "\(user) added to users."
                     }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
@@ -127,7 +132,12 @@ struct SignedIn: View {
             }
             .padding(.bottom, 10)
             Button("See past orders"){
-                pastOrders = true
+                Task{
+                    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+                    orders = orders1.sorted(by:{$0.time.compare($1.time) == .orderedDescending})
+                    //sorted orders chronologically
+                    pastOrders = true
+                }
             }
             .multilineTextAlignment(.center)
             .padding(.all,5)
@@ -155,7 +165,7 @@ struct SignedIn: View {
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
                 Task{
-                try await postRequest(order: order)
+                    try await postRequest(order: order)
                 }
                 errColor = Color.green
                 errMsg = "Order posted to db."
@@ -181,7 +191,7 @@ struct SignedIn: View {
             .foregroundColor(Color.gray)
             .padding(.bottom, 5)
             NavigationLink(destination: PictureReceipt(userName:userName), isActive: $pictureReceipt){EmptyView()}
-            NavigationLink(destination: PastOrders(userName:userName), isActive: $pastOrders){EmptyView()}
+            NavigationLink(destination: PastOrders(userName:userName, sorted:orders), isActive: $pastOrders){EmptyView()}
         }
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))
     }

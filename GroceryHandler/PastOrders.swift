@@ -9,18 +9,16 @@ import SwiftUI
 
 struct PastOrders: View {
     @State var userName:String
+    @State var sorted:[Order]
     var body: some View {
-        let orders = getAllOrdersForUserName(userName: userName).orders.sorted(by:{$0.time.compare($1.time) == .orderedDescending})//sorts so that newer orders are at the top
-        //dont need orders to be @state var because its value wont change in this view
-        //if user goes back to signed in and posts an order when he comes back the getAllOrdersForUserName func will be called again so this page will be updated
         VStack{
-            if (orders.count==1){
+            if (sorted.count==1){
                 Text("1 order for \(userName)")
                     .padding(.bottom, 40)
                     .font(.title)
                     .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
             } else {
-                Text("\(orders.count) orders for \(userName)")
+                Text("\(sorted.count) orders for \(userName)")
                     .padding(.bottom, 40)
                     .font(.title)
                     .foregroundColor(Color(red: 0, green: 0, blue: 0.5))
@@ -28,9 +26,9 @@ struct PastOrders: View {
             ScrollView{
                 Text("")
                 //ignore warning for the ForEach loop: Non-constant range: argument must be an integer literal
-                //because orders.count is constant in this view
-                ForEach(0 ..< orders.count) { value in
-                    Text(getOrderAsString(order:orders[value]))
+                //because sorted.count is constant in this view
+                ForEach(0..<sorted.count) { value in
+                    Text(getOrderAsString(order:sorted[value]))
                         .multilineTextAlignment(.center)
                 }
             }
@@ -47,6 +45,6 @@ struct PastOrders: View {
 
 struct PastOrders_Previews: PreviewProvider {
     static var previews: some View {
-        PastOrders(userName:"userName")
+        PastOrders(userName:"userName", sorted:[Order(userName: "asd", receipt: [Item(price: 10, users: ["Hello, Hi"])], paid: false, time: "time")])
     }
 }

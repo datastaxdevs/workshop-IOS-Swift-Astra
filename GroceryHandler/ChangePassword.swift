@@ -37,7 +37,6 @@ struct ChangePassword: View {
                     var b = false
                     Task{
                         b = try await changePassword(newPassword: newPassword, userName: userName)
-                        
                         if (b==true){
                             errColor = Color.green
                             errMsg = "Password changed to \(newPassword)"
@@ -47,7 +46,6 @@ struct ChangePassword: View {
                         }
                         newPassword = ""
                     }
-                    
                 }
                 .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
                 .padding(.all, 10)
