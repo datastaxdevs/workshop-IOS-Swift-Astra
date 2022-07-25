@@ -154,7 +154,9 @@ struct SignedIn: View {
                 dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                postRequest(order: order)
+                Task{
+                try await postRequest(order: order)
+                }
                 errColor = Color.green
                 errMsg = "Order posted to db."
                 user = ""

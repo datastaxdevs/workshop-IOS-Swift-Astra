@@ -57,8 +57,10 @@ struct ContentView: View {
                         return
                     }
                     print("Signing in with \(userName) and \(password)")
-                    if (signIn(userName:userName, password:password)){
-                        self.signin = true
+                    Task{
+                        if (try await signIn(userName:userName, password:password)){
+                            self.signin = true
+                        }
                     }
                 }
                 .multilineTextAlignment(.center)
@@ -71,7 +73,9 @@ struct ContentView: View {
                             shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
-                        createAccount(userName: userName, password: password)
+                        Task{
+                        try await createAccount(userName: userName, password: password)
+                        }
                     }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
@@ -82,7 +86,9 @@ struct ContentView: View {
                             shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
-                        deleteAccount(userName: userName, password: password)
+                        Task{
+                        try await deleteAccount(userName: userName, password: password)
+                        }
                     }
                     .multilineTextAlignment(.center)
                     .padding(.all, 5)
@@ -94,21 +100,36 @@ struct ContentView: View {
                             shared.errorMessage = "Username and password cannot be empty."
                             return
                         }
-                        if (signIn(userName:userName, password:password)){
-                            changePassword = true
+                        Task{
+                            if (try await signIn(userName:userName, password:password)){
+                                changePassword = true
+                            }
                         }
                     }
                     .multilineTextAlignment(.center)
                     .padding(.all,5)
                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    /*Button("DEV"){
+                    Button("DEV"){
                         print("DEV")
                         //This is where you can test functions by running the app and clicking on this button
-                        populateUserInfoDB()
-                        populateOrdersDB(numNewOrders: 500)
-                     }
-                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                     .padding(.all, 20)*/
+                        //populateUserInfoDB()
+                        //populateOrdersDB(numNewOrders: 500)
+                        Task{
+                            //let str = try await postRequest(userInfo: UserInfo(userName: "newname", password: "newpasssword"))
+                            //let str = try await postRequest(order: getRandomOrder(userNames: Array( getRandomSetOfUserNames())))
+                            //let str = try await getUserInfo(userName:"Gabe1")
+                            let (dic, noError) = try await getUserInfo(userName:"Michael1")
+                            if (noError==true){
+                                print("No error")
+                                print(dic.count)
+                                print("Username: \(dic[dic.startIndex].value.userName)")
+                                print("Passowrd: \(dic[dic.startIndex].value.password)")
+                            }
+                            //print("Str: \(str)")
+                        }
+                    }
+                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                    .padding(.all, 20)
                 }
                 Spacer()
             }.background(Color(red: 0.67, green: 0.87, blue: 0.9))

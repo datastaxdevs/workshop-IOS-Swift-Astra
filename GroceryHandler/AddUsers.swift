@@ -62,7 +62,7 @@ struct AddUsers: View {
                 dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                postRequest(order: order)
+                //UNCOMMENTpostRequest(order: order)
                 errMsgColor = Color.green
                 errMsg = "Order posted to db."
                 user = ""
