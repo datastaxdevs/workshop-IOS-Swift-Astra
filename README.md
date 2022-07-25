@@ -130,8 +130,10 @@ That's it! You can now create accounts and post orders to your database! If you 
 Button("DEV"){
     print("DEV")
     //This is where you can test functions by running the app and clicking on this button
-    populateUserInfoDB()
-    populateOrdersDB(numNewOrders: 500)
+    Task{
+        try await populateUserInfoDB()
+        try await populateOrdersDB(numNewOrders: 300)
+    }
 }
 .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
 .padding(.all, 20)
