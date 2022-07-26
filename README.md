@@ -175,7 +175,7 @@ public var ASTRA_DB_KEYSPACENAME:String? {
 Xcode sets up the environment variables, which means that the app can only be run from Xcode. Once you run it on your phone once, the icon will still be in your phone even when it isn't connected to your computer anymore. However, if you click the icon and try to log in or post orders, the app will crash because the environment variables will not be set up.
 
 
-Now you should create your own collection using Swagger UI:
+#### Now you should create your own collection using Swagger UI:
 ![](READMEPictures/Screen%20Shot%202022-06-30%20at%204.46.48%20PM.png)
 
 You can access Swagger UI from the Astra website:
