@@ -100,7 +100,7 @@ $ rm Podfile
 3. Make sure to comment out the whole *MLTextRecognizer.swift* file once you are in Xcode because the import statements will cause problems if the Pods were deleted successfully. Also comment out this line in the *PictureReceipt.swift* file:
 
 ```swift
-getPricesAsArray(image: image)
+prices = try await getPricesAsArray(image: image)
 ```
 
 ### !! Whether you chose to remove the Pods or keep them, now follow the following steps !!
