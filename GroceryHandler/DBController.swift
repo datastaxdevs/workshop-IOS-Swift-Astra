@@ -462,13 +462,11 @@ func deleteOrderRequest(docID:String) async throws -> Bool{
 //returns true if delete is successfull
 func deleteRequest(docID:String, collectionID:String) async throws-> Bool{
     let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/\(collectionID)/\(docID)")
-    let response = try await URLSession.shared.data(for: request)
-    //NEED TO ASK WHAT RANGER OF HTTPRESPONSES WOULD MEAN AN ERROR OCCURED
-    /*guard let response = response as? HTTPURLResponse,
-     (200...299).contains(response.statusCode) else {
-     print ("server error")
-     print(response)
-     return false
-     }*/
+    let (data, response) = try await URLSession.shared.data(for: request)
+    guard let response = response as? HTTPURLResponse,
+        (200...299).contains(response.statusCode) else {
+        print("Response: \(response)")
+        return false
+     }
     return true
 }
