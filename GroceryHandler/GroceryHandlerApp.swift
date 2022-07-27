@@ -15,9 +15,20 @@ struct GroceryHandlerApp: App {
         }
     }
 }
-
+//these are used to decode a JSON into a dictionary
+//key String is docID
 typealias DictOrder = [String:Order]
 typealias DictUserInfo = [String:UserInfo]
+
+enum AstraError : Error {
+    case getError
+    case deleteUserInfoError
+    case deleteOrderError
+    case postError
+    case stringToDataError
+    case decodeIntoDictionaryError
+    case structToDataError
+}
 
 //environment variables https://blog.eidinger.info/use-environment-variables-from-env-file-in-a-swift-package
 public var ASTRA_DB_ID:String? {
@@ -80,7 +91,6 @@ struct CustomButton: ButtonStyle {
             .background(color)
             .foregroundColor(.white)
             .clipShape(Capsule())
-            .animation(.easeOut)
             .scaleEffect(configuration.isPressed ? 1.2 : 1)
             .shadow(radius: configuration.isPressed ? 40 : 0)
     }
@@ -181,24 +191,40 @@ func getRandomOrder(userNames:[String])->Order{
     return order
 }
 
-func printAllOrdersFor(userName:String) async throws{
-    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
-    printOrders(orders: orders1)
-    print("There are \(orders1.count) orders.")
+func printAllOrdersFor(userName:String) async{
+    do {
+        let (orders1, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+        printOrders(orders: orders1)
+        print("There are \(orders1.count) orders.")
+    } catch AstraError.getError {
+        print("ASTRA ERROR CAUGHT")
+    } catch AstraError.stringToDataError {
+        print("Error converting string to DATA")
+    } catch AstraError.decodeIntoDictionaryError{
+        print("Error decoding into dictionary")
+    } catch {
+        print("error")
+    }
 }
 
-func printUserInfoFor(userName:String)async throws{
-    let (userInfoDict, noError) = try await getUserInfo(userName:userName)
-    if (noError==false){
-        print("Error occured while fetching user info")
-        return
+func printUserInfoFor(userName:String)async{
+    do {
+        let userInfoDict = try await getUserInfo(userName:userName)
+        if (userInfoDict.count==0){
+            print("No account with username: \(userName)")
+            return
+        }
+        let userInfo = userInfoDict[userInfoDict.startIndex].value
+        print("Username: \(userInfo.userName), Password: \(userInfo.password)")
+    }catch AstraError.getError {
+        print("ASTRA GET ERROR CAUGHT")
+    } catch AstraError.stringToDataError {
+        print("Error converting string to DATA")
+    } catch AstraError.decodeIntoDictionaryError{
+        print("Error decocing into dictionary")
+    } catch {
+        print("error")
     }
-    if (userInfoDict.count==0){
-        print("No account with username: \(userName)")
-        return
-    }
-    let userInfo = userInfoDict[userInfoDict.startIndex].value
-    print("Username: \(userInfo.userName), Password: \(userInfo.password)")
 }
 
 //returns an order summary

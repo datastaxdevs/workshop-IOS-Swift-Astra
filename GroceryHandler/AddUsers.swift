@@ -63,16 +63,20 @@ struct AddUsers: View {
                     dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                     let date = Date()
                     let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                    if (try await postRequest(order: order)==true){
+                    do {
+                        try await postRequest(order: order)
                         errMsgColor = Color.green
                         errMsg = "Order posted to db."
                         user = ""
                         items.removeAll()
                         currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
                         orderPosted = true
-                    } else {
+                    } catch AstraError.postError {
                         errMsgColor = Color.red
                         errMsg = "Error: could not post order."
+                    } catch {
+                        errMsgColor = Color.red
+                        errMsg = "Error: please try again."
                     }
                 }
             }
@@ -152,28 +156,33 @@ struct AddUsers: View {
                             errMsgColor = Color.red
                             return
                         }
-                        let (dict, noError) = try await getUserInfo(userName:user)
-                        if (noError==false){
+                        do {
+                            let dict = try await getUserInfo(userName:user)
+                            if (dict.count==0){
+                                //no user info -> no account
+                                errMsgColor = Color.red
+                                errMsg = "No account found for: \(user)."
+                                return
+                            }
+                            let ind = users.firstIndex(of: user)
+                            if (ind==nil){
+                                users.append(user)
+                                errMsgColor = Color.green
+                                errMsg = "User \(user) added."
+                            } else {
+                                errMsgColor = Color.red
+                                errMsg = "\(user) already in list."
+                            }
+                            user = ""
+                        } catch AstraError.getError {
                             errMsgColor = Color.red
-                            errMsg = "Error. Could not fetch user info."
+                            errMsg = "Error occured while fetching user info."
+                            return
+                        } catch {
+                            errMsgColor = Color.red
+                            errMsg = "Error occured. Please try again."
                             return
                         }
-                        if (dict.count==0){
-                            //no user info -> no account
-                            errMsgColor = Color.red
-                            errMsg = "No account found for: \(user)."
-                            return
-                        }
-                        let ind = users.firstIndex(of: user)
-                        if (ind==nil){
-                            users.append(user)
-                            errMsgColor = Color.green
-                            errMsg = "User \(user) added."
-                        } else {
-                            errMsgColor = Color.red
-                            errMsg = "\(user) already in list."
-                        }
-                        user = ""
                     }
                 }
                 .multilineTextAlignment(.center)
@@ -192,18 +201,23 @@ struct AddUsers: View {
                         return
                     }
                     Task{
-                        let (dict, noError) = try await getUserInfo(userName:userName)
-                        if (noError==false){
-                            errMsgColor = Color.red
-                            errMsg = "Error occured while fetching user info."
-                            return
-                        } else {
+                        do {
+                            let dict = try await getUserInfo(userName:userName)
                             if (dict.count==0){
                                 //no user info -> no account
                                 errMsgColor = Color.red
                                 errMsg = "No account found for: \(user)."
                                 return
                             }
+                        } catch AstraError.getError {
+                            errMsgColor = Color.red
+                            errMsg = "Error occured while fetching user info."
+                            return
+                            
+                        } catch {
+                            errMsgColor = Color.red
+                            errMsg = "Error occured. Please try again."
+                            return
                         }
                     }
                     let ind = users.firstIndex(of: user)

@@ -48,27 +48,30 @@ struct SignedIn: View {
                                 return
                             }
                             //check that user has account and that is has not already been added to users. Then add it to users
-                            let (dict, noError) = try await getUserInfo(userName:user)
-                            if (noError==false){
+                            do {
+                                let dict = try await getUserInfo(userName:user)
+                                if (dict.count==0){
+                                    //no user info -> no account
+                                    errColor = Color.red
+                                    errMsg = "No account found for: \(user)."
+                                    return
+                                }
+                                if (users.contains(user)){
+                                    errColor = Color.red
+                                    errMsg = "\(user) already added."
+                                    return
+                                }
+                                users.insert(user)
+                                errColor = Color.green
+                                errMsg = "\(user) added to users."
+                                user = ""
+                            } catch AstraError.getError {
                                 errColor = Color.red
-                                errMsg = "Error. Could not fetch user info."
-                                return
-                            }
-                            if (dict.count==0){
-                                //no user info -> no account
+                                errMsg = "Error getting user info."
+                            } catch {
                                 errColor = Color.red
-                                errMsg = "No account found for: \(user)."
-                                return
+                                errMsg = "Error. Please try again."
                             }
-                            if (users.contains(user)){
-                                errColor = Color.red
-                                errMsg = "\(user) already added."
-                                return
-                            }
-                            users.insert(user)
-                            errColor = Color.green
-                            errMsg = "\(user) added to users."
-                            user = ""
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -139,14 +142,18 @@ struct SignedIn: View {
             .padding(.bottom, 10)
             Button("See past orders"){
                 Task{
-                    let (orders1, b, _) = try await getAllOrdersForUserNameAsync(userName:userName)
-                    if (b==false){
-                        print("error fetching orders")
-                        return
+                    do {
+                        let (orders1, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+                        orders = orders1.sorted(by:{$0.time.compare($1.time) == .orderedDescending})
+                        //sorted orders chronologically
+                        pastOrders = true
+                    } catch AstraError.getError {
+                        errColor = Color.red
+                        errMsg = "Error occured while getting orders."
+                    } catch {
+                        errColor = Color.red
+                        errMsg = "Error: please try again."
                     }
-                    orders = orders1.sorted(by:{$0.time.compare($1.time) == .orderedDescending})
-                    //sorted orders chronologically
-                    pastOrders = true
                 }
             }
             .multilineTextAlignment(.center)
@@ -175,17 +182,20 @@ struct SignedIn: View {
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
                 Task{
-                    if (try await postRequest(order: order)==true){
+                    do {
+                        try await postRequest(order: order)
                         errColor = Color.green
                         errMsg = "Order posted to db."
                         orderSummary = computeAmoundOwed(order: order)
                         orderStr = getOrderAsString(order: order)
                         items.removeAll()
                         users.removeAll()
-                    } else {
+                    } catch AstraError.postError {
                         errColor = Color.red
                         errMsg = "Error: could not post order."
-                        orderSummary = ""
+                    } catch AstraError.structToDataError {
+                        errColor = Color.red
+                        errMsg = "Error: please try again."
                     }
                     user = ""
                     price = ""

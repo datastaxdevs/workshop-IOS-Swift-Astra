@@ -58,7 +58,7 @@ struct ContentView: View {
                     }
                     print("Signing in with \(userName) and \(password)")
                     Task{
-                        if (try await signIn(userName:userName, password:password)){
+                        if (await signIn(userName:userName, password:password)){
                             self.signin = true
                         }
                     }
@@ -74,7 +74,7 @@ struct ContentView: View {
                             return
                         }
                         Task{
-                            try await createAccount(userName: userName, password: password)
+                            await createAccount(userName: userName, password: password)
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -87,7 +87,7 @@ struct ContentView: View {
                             return
                         }
                         Task{
-                            try await deleteAccount(userName: userName, password: password)
+                            await deleteAccount(userName: userName, password: password)
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -101,7 +101,7 @@ struct ContentView: View {
                             return
                         }
                         Task{
-                            if (try await signIn(userName:userName, password:password)){
+                            if (await signIn(userName:userName, password:password)){
                                 changePassword = true
                             }
                         }
@@ -116,9 +116,9 @@ struct ContentView: View {
                             try await populateUserInfoDB()
                             try await populateOrdersDB(numNewOrders: 300)
                         }
-                    }
-                    .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
-                    .padding(.all, 20)*/
+                     }
+                     .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
+                     .padding(.all, 20)*/
                 }
                 Spacer()
             }.background(Color(red: 0.67, green: 0.87, blue: 0.9))

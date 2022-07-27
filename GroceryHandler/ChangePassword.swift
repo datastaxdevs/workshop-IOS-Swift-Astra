@@ -36,7 +36,7 @@ struct ChangePassword: View {
                     }
                     var b = false
                     Task{
-                        b = try await changePassword(newPassword: newPassword, userName: userName)
+                        b = await changePassword(newPassword: newPassword, userName: userName)
                         if (b==true){
                             errColor = Color.green
                             errMsg = "Password changed to \(newPassword)"
