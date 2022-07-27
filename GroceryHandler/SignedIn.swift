@@ -49,7 +49,12 @@ struct SignedIn: View {
                             }
                             //check that user has account and that is has not already been added to users. Then add it to users
                             let (dict, noError) = try await getUserInfo(userName:user)
-                            if (noError==true && dict.count==0){
+                            if (noError==false){
+                                errColor = Color.red
+                                errMsg = "Error. Could not fetch user info."
+                                return
+                            }
+                            if (dict.count==0){
                                 //no user info -> no account
                                 errColor = Color.red
                                 errMsg = "No account found for: \(user)."
@@ -63,6 +68,7 @@ struct SignedIn: View {
                             users.insert(user)
                             errColor = Color.green
                             errMsg = "\(user) added to users."
+                            user = ""
                         }
                     }
                     .multilineTextAlignment(.center)
@@ -133,7 +139,11 @@ struct SignedIn: View {
             .padding(.bottom, 10)
             Button("See past orders"){
                 Task{
-                    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+                    let (orders1, b, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+                    if (b==false){
+                        print("error fetching orders")
+                        return
+                    }
                     orders = orders1.sorted(by:{$0.time.compare($1.time) == .orderedDescending})
                     //sorted orders chronologically
                     pastOrders = true
@@ -165,16 +175,21 @@ struct SignedIn: View {
                 let date = Date()
                 let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
                 Task{
-                    try await postRequest(order: order)
+                    if (try await postRequest(order: order)==true){
+                        errColor = Color.green
+                        errMsg = "Order posted to db."
+                        orderSummary = computeAmoundOwed(order: order)
+                        orderStr = getOrderAsString(order: order)
+                        items.removeAll()
+                        users.removeAll()
+                    } else {
+                        errColor = Color.red
+                        errMsg = "Error: could not post order."
+                        orderSummary = ""
+                    }
+                    user = ""
+                    price = ""
                 }
-                errColor = Color.green
-                errMsg = "Order posted to db."
-                user = ""
-                price = ""
-                items.removeAll()
-                users.removeAll()
-                orderSummary = computeAmoundOwed(order: order)
-                orderStr = getOrderAsString(order: order)
             }
             .multilineTextAlignment(.center)
             .padding(.top,5)

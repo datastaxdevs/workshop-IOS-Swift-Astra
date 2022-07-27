@@ -102,6 +102,19 @@ struct CustomTextField: TextFieldStyle {
     }
 }
 
+func getOrderAsString(order:Order)->String{
+    var result = "Paid: \(order.paid), Date: \(order.time)\n"
+    for item in order.receipt {
+        result += "Price: \(item.price) -- Users: "
+        for user in item.users {
+            result += "\(user) "
+        }
+        result+="\n"
+    }
+    result+="\n-----------------------\n"
+    return result
+}
+
 //to know average bytes of random order
 func getAverageNumBytesOfDoc()->Int{
     let numNewOrders = 50//arbitrary

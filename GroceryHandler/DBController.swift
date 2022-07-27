@@ -20,20 +20,26 @@ let shared = ErrorManager()
 func signIn(userName:String, password:String) async throws -> Bool{
     let (dict, noError) = try await getUserInfo(userName:userName)
     if (noError==false){
+        print("error fetching user info")
         return false
     }
     if (dict.count==0){
-        shared.errMsgColor = Color.red
-        shared.errorMessage = "There is no account with username \(userName)."
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "There is no account with username \(userName)."
+        }
         print("There is no account with username \(userName).")
         return false
     }
     if (dict[dict.startIndex].value.password==password){
         //dict should have only one entry since usernames are unique
+        print("Correct password, signing in")
         return true
     } else {
-        shared.errMsgColor = Color.red
-        shared.errorMessage = "Incorrect password."
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "Incorrect password."
+        }
         print("Incorrect password.")
         return false
     }
@@ -48,14 +54,26 @@ func createAccount(userName:String, password:String) async throws{
         return
     }
     if (userInfoDict.count>0){
-        shared.errMsgColor = Color.red
-        shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "Cannot create account with username: \(userName) because one already exists."
+        }
         print("Cannot create account with username: \(userName) because one already exists.")
         return
     }
-    let _ = try await postRequest(userInfo: UserInfo(userName: userName, password: password))
-    shared.errMsgColor = Color.green
-    shared.errorMessage = "Account created successfully."
+    let b = try await postRequest(userInfo: UserInfo(userName: userName, password: password))
+    if (b==false){
+        print("Error posting user info")
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "Error: could not create account."
+        }
+        return
+    }
+    DispatchQueue.main.async {//UI can only be changed from main thread
+        shared.errMsgColor = Color.green
+        shared.errorMessage = "Account created successfully."
+    }
     print("Account created successfully.")
 }
 
@@ -69,8 +87,10 @@ func deleteAccount(userName:String, password:String) async throws{
     //returns dict of [docID:UserInfo]
     //because doc id is needed to delete from db
     if (userInfoDB.count==0){
-        shared.errMsgColor = Color.red
-        shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "Cannot delete account with username: \(userName) because none exists."
+        }
         print("Cannot delete account with username: \(userName) because none exists.")
         return
     }
@@ -87,14 +107,18 @@ func deleteAccount(userName:String, password:String) async throws{
             print("Deletion of user info is successfull")
         }
     } else {
-        shared.errMsgColor = Color.red
-        shared.errorMessage = "Incorrect password. Cannot delete account."
+        DispatchQueue.main.async {//UI can only be changed from main thread
+            shared.errMsgColor = Color.red
+            shared.errorMessage = "Incorrect password. Cannot delete account."
+        }
         print("Incorrect password. Cannot delete account.")
         return
     }
     try await deleteOrdersForUserName(userName:userName)
-    shared.errMsgColor = Color.green
-    shared.errorMessage = "Account deleted successfully."
+    DispatchQueue.main.async {//UI can only be changed from main thread
+        shared.errMsgColor = Color.green
+        shared.errorMessage = "Account deleted successfully."
+    }
     print("Account deleted successfully.")
 }
 
@@ -104,7 +128,7 @@ func deleteOrdersForUserName(userName:String) async throws{
     //get doc ID because can only delete from database with doc ID
     let (_, b, docIDSet) = try await getAllOrdersForUserNameAsync(userName:userName)
     if (b==false){
-        print("could not delete all orders")
+        print("could not get all orders")
         return
     }
     for docID in docIDSet {
@@ -117,7 +141,11 @@ func deleteOrdersForUserName(userName:String) async throws{
 
 //if user has lots of receipts he wants to compute in one go
 func computeAllOrdersFor(userName:String) async throws{
-    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    let (orders1, b, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    if (b==false){
+        print("could not get all orders")
+        return
+    }
     var dict = [String:Double]()
     for order in orders1{
         computeAmountOwed(order: order, dict: &dict)
@@ -157,16 +185,22 @@ func populateUserInfoDB() async throws{
 //populates orders db with orders given from a set of usernames
 //same set of usernames in func populateUserInfoDB()
 func populateOrdersDB(numNewOrders:Int) async throws{
+    var numSuccessfullyPosted = 0
     for _ in 0..<numNewOrders{
         let order = getRandomOrder(userNames: Array(getRandomSetOfUserNames()))
-        print(try await postRequest(order: order))
+        if (try await postRequest(order: order)==true){
+            numSuccessfullyPosted+=1
+        }
     }
-    print("Posted \(numNewOrders) new orders")
+    print("Posted \(numSuccessfullyPosted) new orders")
 }
 
-
 func getAllOrdersForUserNameAsString(userName:String) async throws ->(result:String, numOrders:Int){
-    let (pastOrders, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    let (pastOrders, b, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    if (b==false){
+        print("could not get all orders")
+        return ("", 0)
+    }
     var result = ""
     for order in pastOrders {
         result += getOrderAsString(order: order)
@@ -176,23 +210,10 @@ func getAllOrdersForUserNameAsString(userName:String) async throws ->(result:Str
     return (result, pastOrders.count)
 }
 
-func getOrderAsString(order:Order)->String{
-    var result = "Paid: \(order.paid), Date: \(order.time)\n"
-    for item in order.receipt {
-        result += "Price: \(item.price) -- Users: "
-        for user in item.users {
-            result += "\(user) "
-        }
-        result+="\n"
-    }
-    result+="\n-----------------------\n"
-    return result
-}
-
 func proccessDataString(dataString:String)->(String, String){
     var dataString = dataString
     /*
-     JSON data is of the form
+     JSON dataString is of the form
      {“data”:
      {
      “docID”:Order,
@@ -241,29 +262,26 @@ func proccessDataString(dataString:String)->(String, String){
 //if bool returned is false that means that error occured when fetching userInfo
 func getUserInfo(userName:String) async throws -> ([String:UserInfo], Bool) {
     let str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/userInfo?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=1"
-    print("USING ASYNC")
     let (dataString, noError) = try await getRequestAsync(str: str)
-    if (noError==true){
-        // print("no error")
-    } else {
-        print("error")
+    if (noError==false){
+        print("error occured during GET request")
         return ([String:UserInfo](), false)
     }
-    var userInfoDict = [String:UserInfo]()
     let (formattedData, _) = proccessDataString(dataString: dataString)
     if let jsonData = formattedData.data(using: .utf8) {
-        let events = try? JSONDecoder().decode(DictUserInfo.self, from: jsonData)
-        //if events!.count==1 -> there is user info for username
-        //if events!.count==0 -> there is no user info for username
-        if !(events!.count==0){
-            //there is at least one user info (we are expecting only one)
-            //events is dict of [String:UserInfo] -> [DocID:UserInfo]
-            userInfoDict[events![events!.startIndex].key] = events![events!.startIndex].value
+        do {
+            let userInfoDict = try JSONDecoder().decode(DictUserInfo.self, from: jsonData)
+            //userInfoDict is dict of [String:UserInfo] -> [DocID:UserInfo]
+            //if userInfoDict.count==1 -> there is user info for username
+            //if userInfoDict.count==0 -> there is no user info for username
+            return (userInfoDict, true)
         }
-        return (userInfoDict, true)
+        catch {
+            return ([String:UserInfo](), false)
+        }
     } else {
         print("Could not convert to type Data")
-        return (userInfoDict, false)
+        return ([String:UserInfo](), false)
     }
 }
 
@@ -283,6 +301,8 @@ func getRequestAsync(str:String) async throws -> (String, Bool){
     return ("error", false)
 }
 
+//if bool returned is false, then a mistake occured and the orders were not fetched
+//successfully
 func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Bool, Set<String>){
     //TO GET ALL ORDERS: get request with page-size=20
     //then get operation with page-state = val of page state from first get request
@@ -290,25 +310,27 @@ func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Bool
     var docIDSet = Set<String>()//to prevent duplicates
     var str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20"
     let (dataString, noError) = try await getRequestAsync(str: str)
-    if (noError==true){
-        //print("no error")
-    } else {
-        print("error")
+    if (noError==false){
+        print("error occured during GET request")
         return ([Order](), false, Set<String>())
     }
     var (formattedData, pageState) = proccessDataString(dataString: dataString)
     if let jsonData = formattedData.data(using: .utf8) {
-        let events = try? JSONDecoder().decode(DictOrder.self, from: jsonData)
-        for (key, eventData) in events! {
-            //eventData is an Order
-            //key is a docID
-            if !(docIDSet.contains(key)){
-                docIDSet.insert(key)
-                orders.append(eventData)
+        do {
+            let ordersDict = try JSONDecoder().decode(DictOrder.self, from: jsonData)
+            for (docID, order) in ordersDict {
+                if !(docIDSet.contains(docID)){
+                    docIDSet.insert(docID)
+                    orders.append(order)
+                }
             }
+        }
+        catch {
+            return ([Order](), false, Set<String>())
         }
     } else {
         print("Could not convert to type Data")
+        return ([Order](), false, Set<String>())
     }
     if (pageState.isEmpty){
         return (orders, true, docIDSet)
@@ -317,26 +339,28 @@ func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Bool
         str = "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/orders?where={\"userName\":{\"$eq\":\"\(userName)\"}}&page-size=20&page-state=\(pageState)"
         print("pageState: \(pageState)")
         let (dataString, noError) = try await getRequestAsync(str: str)
-        if (noError==true){
-            //print("no error")
-        } else {
-            print("error")
+        if (noError==false){
+            print("error occured during GET request")
             return ([Order](), false, Set<String>())
         }
         let (formattedData, pageState1) = proccessDataString(dataString: dataString)
         pageState = pageState1
         if let jsonData = formattedData.data(using: .utf8) {
-            let events = try? JSONDecoder().decode(DictOrder.self, from: jsonData)
-            for (key, eventData) in events! {
-                //eventData is an Order
-                //key is a docID
-                if !(docIDSet.contains(key)){
-                    docIDSet.insert(key)
-                    orders.append(eventData)
+            do{
+                let ordersDict = try JSONDecoder().decode(DictOrder.self, from: jsonData)
+                for (docID, order) in ordersDict {
+                    if !(docIDSet.contains(docID)){
+                        docIDSet.insert(docID)
+                        orders.append(order)
+                    }
                 }
+            }
+            catch {
+                return ([Order](), false, Set<String>())
             }
         } else {
             print("Could not convert to type Data")
+            return ([Order](), false, Set<String>())
         }
     }
     return (orders, true, docIDSet)
@@ -348,6 +372,10 @@ func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Bool
 func changePassword(newPassword:String, userName:String) async throws -> Bool{
     let (dict, noError) = try await getUserInfo(userName:userName)
     if (noError==false){
+        print("error fetching user info")
+        return false
+    }
+    if (dict.count==0){
         return false
     }
     let docID = dict[dict.startIndex].key
@@ -357,8 +385,12 @@ func changePassword(newPassword:String, userName:String) async throws -> Bool{
         return false//could not convert to type data
     }
     let request = httpRequest(httpMethod: "PATCH", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/userInfo/\(docID)")
-    print("DOC ID: \(docID)")
     let (data, response) = try await URLSession.shared.upload(for: request, from: uploadData)
+    guard let response = response as? HTTPURLResponse,
+          (200...299).contains(response.statusCode) else {
+        print("Response: \(response)")
+        return false
+    }
     if response.mimeType == "application/json",
        let dataString = String(data: data, encoding: .utf8) {
         print ("got data: \(dataString)")
@@ -371,58 +403,58 @@ func changePassword(newPassword:String, userName:String) async throws -> Bool{
     return false
 }
 
-func postRequest(uploadData:Data, collection:String) async throws -> String{
+//returns true if POST is successful
+func postRequest(uploadData:Data, collection:String) async throws -> Bool{
     let request = httpRequest(httpMethod: "POST", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/\(collection)")
     let (data, response) = try await URLSession.shared.upload(for: request, from: uploadData)
     guard let response = response as? HTTPURLResponse,
           (200...299).contains(response.statusCode) else {
-        print ("server error")
         print("Response: \(response)")
-        return response.description
+        return false
     }
     if response.mimeType == "application/json",
        let dataString = String(data: data, encoding: .utf8) {
         //print("POST to \(collection) successful")
-        if (collection.elementsEqual("userInfo")){
-            print("Account created successfully")
-        }
-        //print ("got data: \(dataString)")
+        print ("got data: \(dataString)")
         //dataString is of form:
         /*
          {"documentId":"58171bbd-cd42-4c54-a5f7-ed146097d1dc"}
          */
-        return dataString
+        return true
     }
-    return "ERROR"
+    return false
 }
 
 //posts a userInfo to db
-func postRequest(userInfo:UserInfo) async throws -> String{
-    print("In async function")
+//returns true if POST was successful
+func postRequest(userInfo:UserInfo) async throws -> Bool{
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(userInfo) else {
-        return "error convert to data"
+        return false
         //could not convert to type data
     }
-    let str = try await postRequest(uploadData: uploadData, collection: "userInfo")
-    return str
+    return try await postRequest(uploadData: uploadData, collection: "userInfo")
 }
 
 //posts an order to db
-func postRequest(order:Order) async throws -> String{
+//returns true if POST was successful
+func postRequest(order:Order) async throws -> Bool{
     let encoder = JSONEncoder()
     encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(order) else {
-        return "error convert to data"
+        return false
         //could not convert to type data
     }
-    let str = try await postRequest(uploadData: uploadData, collection: "orders")
-    return str
+    return try await postRequest(uploadData: uploadData, collection: "orders")
 }
 
 func getOrdersWhereTotalIs(total:Double, userName:String) async throws ->[Order]{
-    let (orders1, _, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    let (orders1, b, _) = try await getAllOrdersForUserNameAsync(userName:userName)
+    if (b==false){
+        print("could not get all orders")
+        return [Order]()
+    }
     var result = [Order]()
     for order in orders1 {
         var sum = 0.0
@@ -462,11 +494,11 @@ func deleteOrderRequest(docID:String) async throws -> Bool{
 //returns true if delete is successfull
 func deleteRequest(docID:String, collectionID:String) async throws-> Bool{
     let request = httpRequest(httpMethod: "DELETE", endUrl: "/namespaces/\(ASTRA_DB_KEYSPACENAME!)/collections/\(collectionID)/\(docID)")
-    let (data, response) = try await URLSession.shared.data(for: request)
+    let (_, response) = try await URLSession.shared.data(for: request)
     guard let response = response as? HTTPURLResponse,
-        (200...299).contains(response.statusCode) else {
+          (200...299).contains(response.statusCode) else {
         print("Response: \(response)")
         return false
-     }
+    }
     return true
 }

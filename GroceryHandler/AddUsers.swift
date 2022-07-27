@@ -63,13 +63,17 @@ struct AddUsers: View {
                     dateFormatter.dateFormat = "M/d/y, HH:mm:ss"
                     let date = Date()
                     let order = Order(userName: userName, receipt: items, paid: false, time:dateFormatter.string(from:date))
-                    print(try await postRequest(order: order))
-                    errMsgColor = Color.green
-                    errMsg = "Order posted to db."
-                    user = ""
-                    items.removeAll()
-                    currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
-                    orderPosted = true
+                    if (try await postRequest(order: order)==true){
+                        errMsgColor = Color.green
+                        errMsg = "Order posted to db."
+                        user = ""
+                        items.removeAll()
+                        currentOrder = "\(computeAmoundOwed(order: order))\n-----------------------\n\n\(getOrderAsString(order: order))"
+                        orderPosted = true
+                    } else {
+                        errMsgColor = Color.red
+                        errMsg = "Error: could not post order."
+                    }
                 }
             }
             .padding(.all,15)
@@ -149,10 +153,14 @@ struct AddUsers: View {
                             return
                         }
                         let (dict, noError) = try await getUserInfo(userName:user)
-                        if (noError==true && dict.count==0){
+                        if (noError==false){
+                            errMsgColor = Color.red
+                            errMsg = "Error. Could not fetch user info."
+                            return
+                        }
+                        if (dict.count==0){
                             //no user info -> no account
                             errMsgColor = Color.red
-                            print("NOT HERE")
                             errMsg = "No account found for: \(user)."
                             return
                         }
