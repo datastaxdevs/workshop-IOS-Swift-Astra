@@ -15,10 +15,6 @@ struct GroceryHandlerApp: App {
         }
     }
 }
-//these are used to decode a JSON into a dictionary
-//key String is docID
-typealias DictOrder = [String:Order]
-typealias DictUserInfo = [String:UserInfo]
 
 enum AstraError : Error {
     case getError

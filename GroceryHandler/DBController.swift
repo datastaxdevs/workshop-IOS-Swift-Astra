@@ -311,7 +311,7 @@ func getUserInfo(userName:String) async throws -> [String:UserInfo] {
     let (formattedData, _) = proccessDataString(dataString: dataString)
     if let jsonData = formattedData.data(using: .utf8) {
         do {
-            let userInfoDict = try JSONDecoder().decode(DictUserInfo.self, from: jsonData)
+            let userInfoDict = try JSONDecoder().decode([String:UserInfo].self, from: jsonData)
             //userInfoDict is dict of [String:UserInfo] -> [DocID:UserInfo]
             //if userInfoDict.count==1 -> there is user info for username
             //if userInfoDict.count==0 -> there is no user info for username
@@ -336,7 +336,7 @@ func getRequestAsync(str:String) async throws -> String {
     if response.mimeType == "application/json",
        let dataString = String(data: data, encoding: .utf8) {
         //print ("got data: \(dataString)")
-        print("Response status code in get request: \(response.statusCode)")
+        //print("Response status code in get request: \(response.statusCode)")
         return dataString
     }
     throw AstraError.getError
@@ -352,7 +352,7 @@ func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Set<
     var (formattedData, pageState) = proccessDataString(dataString: dataString)
     if let jsonData = formattedData.data(using: .utf8) {
         do {
-            let ordersDict = try JSONDecoder().decode(DictOrder.self, from: jsonData)
+            let ordersDict = try JSONDecoder().decode([String:Order].self, from: jsonData)
             for (docID, order) in ordersDict {
                 if !(docIDSet.contains(docID)){
                     docIDSet.insert(docID)
@@ -378,7 +378,7 @@ func getAllOrdersForUserNameAsync(userName:String) async throws ->([Order], Set<
         pageState = pageState1
         if let jsonData = formattedData.data(using: .utf8) {
             do {
-                let ordersDict = try JSONDecoder().decode(DictOrder.self, from: jsonData)
+                let ordersDict = try JSONDecoder().decode([String:Order].self, from: jsonData)
                 for (docID, order) in ordersDict {
                     if !(docIDSet.contains(docID)){
                         docIDSet.insert(docID)
