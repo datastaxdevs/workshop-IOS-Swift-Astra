@@ -325,7 +325,7 @@ curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api
 
 Notice there are only 2 differences between this cURL command and the one from the first example: There is no *page-size* (since there is a max of 1 user info per person no need to specify how many docs we want to retrieve) and the collection-id is changed from *orders* to *userInfo*.
 
-The JSON that is returned is the following:
+The JSON that is returned is of the following form:
 
 ```json
 {"data":{"ec47a067-d0a7-4f3b-8606-966aa39ce8e9":{"password":"itsdrewnow","userName":"Andy1"}}}
