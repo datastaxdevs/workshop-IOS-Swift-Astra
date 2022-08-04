@@ -42,17 +42,18 @@ func signIn(userName:String, password:String) async -> Bool{
         }
     } catch AstraError.getError {
         print("ASTRA GET ERROR CAUGHT")
-        return false
     } catch AstraError.stringToDataError {
         print("Error converting string to DATA")
-        return false
     } catch AstraError.decodeIntoDictionaryError{
         print("Error decoding into dictionary")
-        return false
     } catch {
         print("error")
-        return false
     }
+    DispatchQueue.main.async {//UI can only be changed from main thread
+        shared.errMsgColor = Color.red
+        shared.errorMessage = "Error: Could not sign in."
+    }
+    return false
 }
 
 //for a user to sign up (create account)
@@ -74,6 +75,7 @@ func createAccount(userName:String, password:String) async {
             shared.errorMessage = "Account created successfully."
         }
         print("Account created successfully.")
+        return
     } catch AstraError.getError {
         print("ASTRA get error CAUGHT")
     } catch AstraError.stringToDataError {
@@ -81,16 +83,16 @@ func createAccount(userName:String, password:String) async {
     } catch AstraError.postError {
         print("Astra POST error caugth")
         print("Error posting user info. Could not create account")
-        DispatchQueue.main.async {//UI can only be changed from main thread
-            shared.errMsgColor = Color.red
-            shared.errorMessage = "Error: could not create account."
-        }
     } catch AstraError.structToDataError {
         print("Error converting struct to data")
     } catch AstraError.decodeIntoDictionaryError{
         print("Error decoding into dictionary")
     } catch {
         print("error")
+    }
+    DispatchQueue.main.async {//UI can only be changed from main thread
+        shared.errMsgColor = Color.red
+        shared.errorMessage = "Error: could not create account."
     }
 }
 
@@ -132,6 +134,7 @@ func deleteAccount(userName:String, password:String) async{
             shared.errorMessage = "Account deleted successfully."
         }
         print("Account deleted successfully.")
+        return
     } catch AstraError.getError {
         print("ASTRA get error CAUGHT")
     } catch AstraError.stringToDataError {
@@ -139,21 +142,17 @@ func deleteAccount(userName:String, password:String) async{
     } catch AstraError.deleteUserInfoError {
         print("ASTRA DELETE ERROR CAUGHT")
         print("Error deleting userInfo, could not delete account")
-        DispatchQueue.main.async {//UI can only be changed from main thread
-            shared.errMsgColor = Color.red
-            shared.errorMessage = "Error deleting user Info"
-        }
     } catch AstraError.deleteOrderError {
         print("ASTRA DELETE ERROR CAUGHT")
-        print("Error deleting order")
-        DispatchQueue.main.async {//UI can only be changed from main thread
-            shared.errMsgColor = Color.red
-            shared.errorMessage = "Could not delete all orders for \(userName)"
-        }
+        print("Error deleting order. Could not delete all orders for \(userName)")
     } catch AstraError.decodeIntoDictionaryError{
         print("Error decoding into dictionary")
     } catch {
         print("error")
+    }
+    DispatchQueue.main.async {//UI can only be changed from main thread
+        shared.errMsgColor = Color.red
+        shared.errorMessage = "Error occured while deleting account"
     }
 }
 
