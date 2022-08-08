@@ -258,7 +258,7 @@ The following will help you become comfortable with HTTP requests, URLs, and JSO
 First off, what does HTTP stand for? From [CodeAcademy](https://www.codecademy.com/article/http-requests):
 
 ```
-HTTP stands for Hypertext Transfer Protocol and is used to structure requests and responses over the internet.
+"HTTP stands for Hypertext Transfer Protocol and is used to structure requests and responses over the internet.
 HTTP requires data to be transferred from one point to another over the network.” 
 ```
 
