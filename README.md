@@ -243,9 +243,6 @@ To be explicitly clear, an *Order* is posted to the collection *orders* and a *U
 
 Using the Document API for Astra means that data is stored in *keyspaces*. A *keyspace* can have multiple *collections* and a *collection* stores a list of *JSON documents*.
 
-A more detailed walkthrough is available at 
-![https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html). However, we've included some details below for sake of completion.
-
 The picture below gives a graphical view of how data is stored for this sample app. There is only one *keyspace* and two *collections*. A JSON doc can be identified by its orange color.
 
 ![](READMEPictures/Screen%20Shot%202022-07-20%20at%2010.35.16%20AM.png)
