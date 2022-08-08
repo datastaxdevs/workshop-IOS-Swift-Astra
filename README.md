@@ -279,7 +279,7 @@ However, an HTTP request is more than just a URL. It is a URL, headers, a reques
 
 We can perform HTTP requests in the terminal app using a command line tool called cURL, or client URL.
 
-Before using cURL, run these commands in your Terminal windown so that you won't have to copy these values more than once:
+Before using cURL, run these commands in your Terminal window so that you won't have to copy these values more than once:
 
 ```bash
 export ASTRA_DB_ID=REPLACE_ME
