@@ -245,7 +245,7 @@ Using the Document API for Astra means that data is stored in *keyspaces*. A *ke
 
 The picture below gives a graphical view of how data is stored for this sample app. There is only one *keyspace* and two *collections*. A JSON doc can be identified by its orange color.
 
-![](READMEPictures/Screen%20Shot%202022-07-20%20at%2010.35.16%20AM.png)
+![](READMEPictures/Screen%20Shot%202022-08-08%20at%202.32.24%20PM.png)
 
 Check out the [Astra DB documentation](https://docs.datastax.com/en/astra/docs/develop/dev-with-doc.html) for more information.
 
