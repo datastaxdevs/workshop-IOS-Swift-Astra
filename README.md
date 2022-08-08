@@ -37,7 +37,8 @@ It will take a while to download. While this is happening, move on to the next s
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.23.58%20AM.png)
 
 
-## How to replicate project:
+## How to replicate the project:
+
 See -> [Prerequisites first](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#prerequisites)
 
 Go to the directory where you would like your project to reside. If you are not sure what this means, open your Terminal app:
@@ -58,9 +59,10 @@ git clone https://github.com/datastaxdevs/workshop-IOS-Swift-Astra.git
 
 This is all that is needed to strictly connect to the database. However, the sample app uses ML Kit Text Recognition API to decipher prices from receipts. 
 
-The Pods required for this are too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#remove-pods-from-project).
+The Pods required for this are way too big to be stored on Github, so either follow the steps to integrate them in your project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#integrate-pods-in-project) or remove them from project by [clicking here](https://github.com/datastaxdevs/workshop-IOS-Swift-Astra#remove-pods-from-project).
 
 #### Integrate Pods in Project:
+
 1. In the same window, go to your project directory by running 
 
 ```bash
