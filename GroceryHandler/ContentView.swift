@@ -36,7 +36,7 @@ struct ContentView: View {
                     Spacer()
                 }
                 HStack{
-                    TextField("Password:", text: $password)
+                    SecureField("Password:", text: $password)
                         .textFieldStyle(CustomTextField())
                         .onSubmit(){
                             shared.errorMessage = ""
