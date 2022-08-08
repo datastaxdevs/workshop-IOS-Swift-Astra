@@ -73,22 +73,22 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "ASTRA_DB_ID"
-            value = "565b727d-4adc-41de-bf64-47938d5fd7c1"
+            value = "REPLACE_ME"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "ASTRA_DB_TOKEN"
-            value = "AstraCS:vjjXDSEqAzPHZPXRrtCKTucU:ddaced47ef0f189b86dcf5543ba67c3f6cab916dc4a9cb935bbff0472acf50e0"
+            value = "REPLACE_ME"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "ASTRA_DB_REGION"
-            value = "us-east1"
+            value = "REPLACE_ME"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "ASTRA_DB_KEYSPACENAME"
-            value = "swifty"
+            value = "REPLACE_ME"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
