@@ -113,8 +113,8 @@ struct ContentView: View {
                         print("DEV")
                         //This is where you can test functions by running the app and clicking on this button
                         Task{
-                            try await populateUserInfoDB()
-                            try await populateOrdersDB(numNewOrders: 300)
+                            await populateUserInfoDB()
+                            await populateOrdersDB(numNewOrders: 300)
                         }
                      }
                      .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
