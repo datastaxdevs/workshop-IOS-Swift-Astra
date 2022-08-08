@@ -103,7 +103,7 @@ rm Podfile
 prices = try await getPricesAsArray(image: image)
 ```
 
-### !! Whether you chose to remove the Pods or keep them, now follow the following steps !!
+### !! Whether you choose to remove the Pods or keep them, now follow the steps below !!
 
 
 1. Launch the Xcode app and select *Open a project or file*
@@ -143,10 +143,9 @@ Run the app on your phone and click this button!
 
 
 ## How to connect to your own database in the app:
-If you would like to connect to your Astra DB from this app, you will need to change these environment variables in Xcode:
-```
-ASTRA_DB_ID, ASTRA_DB_REGION, ASTRA_DB_TOKEN, ASTRA_DB_KEYSPACENAME
-```
+
+If you would like to connect to your Astra DB from this app, you will need to change these environment variables in Xcode: `ASTRA_DB_ID`, `ASTRA_DB_REGION`, `ASTRA_DB_TOKEN`, and `ASTRA_DB_KEYSPACENAME`.
+
 The *ASTRA_DB_ID* can be found in the dashboard of the astra website:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%204.17.34%20PM.png)
 
@@ -235,10 +234,16 @@ To be explicitly clear, an *Order* is posted to the collection *orders* and a *U
 [Click here](https://developer.apple.com/tutorials/swiftui)
 
 ### Interested in using the ML in your own app?
+
 [Click here](https://developers.google.com/ml-kit/vision/text-recognition/ios) and/or look at the *MLTextRecognizer.swift* file
 
 ### Intro to Document API
+
 Using the Document API for Astra means that data is stored in *keyspaces*. A *keyspace* can have multiple *collections* and a *collection* stores a list of *JSON documents*.
+
+A more detailed walkthrough is available at 
+![https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html](https://stargate.io/docs/stargate/1.0/quickstart/quick_start-document.html). However, we've included some details below for sake of completion.
+
 The picture below gives a graphical view of how data is stored for this sample app. There is only one *keyspace* and two *collections*. A JSON doc can be identified by its orange color.
 
 ![](READMEPictures/Screen%20Shot%202022-07-20%20at%2010.35.16%20AM.png)
@@ -251,19 +256,20 @@ The following will help you become comfortable with HTTP requests, URLs, and JSO
 First off, what does HTTP stand for? From [CodeAcademy](https://www.codecademy.com/article/http-requests):
 
 ```
-“HTTP stands for Hypertext Transfer Protocol and is used to structure requests and responses over the internet.
- HTTP requires data to be transferred from one point to another over the network.” 
+HTTP stands for Hypertext Transfer Protocol and is used to structure requests and responses over the internet.
+HTTP requires data to be transferred from one point to another over the network.” 
 ```
 
 The HTTP request methods that we will be using in this app are GET, POST, PATCH, and DELETE.
 GET and DELETE are self explanatory. POST is used to persist data to the database and PATCH is used to update data that is already in the database.
 
-To connect to Datastax astra using the Document API, a specific URL is needed:
+To connect to Datastax astra using the Document API, a specific URL, which includes the database specific properties is needed as below:
+
 ```
 https://ASTRA_DB_ID-ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/ASTRA_DB_KEYSPACENAME/collections/{collection-id}
 ```
 
-The *api/rest* in the URL is what causes the Document API to be called.
+The *api/rest* in the URL is what triggers the Document API. There are other methods of access (including CQL, GraphQL, etc.)
 
 This URL might be followed by something called a *Query String*. The URL and query string are separated by a question mark -> ?
 
@@ -274,20 +280,25 @@ However, an HTTP request is more than just a URL. It is a URL, headers, a reques
 We can perform HTTP requests in the terminal app using a command line tool called cURL, or client URL.
 
 Before using cURL, run these commands in your Terminal windown so that you won't have to copy these values more than once:
+
 ```bash
 export ASTRA_DB_ID=REPLACE_ME
 export ASTRA_DB_REGION=REPLACE_ME
 export ASTRA_DB_TOKEN=REPLACE_ME
 export ASTRA_DB_KEYSPACENAME=REPLACE_ME
 ```
+
 Make sure the variables were properly exported by running this command:
+
 ```bash
 printenv | grep ASTRA_DB
 ```
+
 Or if you want to do it one variable at a time:
 ```bash
 echo $ASTRA_DB_REGION
 ```
+
 
 Now let's go through a few examples. 
 
@@ -296,13 +307,15 @@ Now let's go through a few examples.
 Notice that the collection “orders” has to have been created in your database.
 
 Run this command in your Terminal:
+
 ```bash
 curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/orders"'?where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20' -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
 ```
 
 As we can see, the HTTP method (GET), URL, query string, and headers (-H) are all there.
 
-The query string is : 
+The query string is :
+
 ```
 where=\{"userName":\{"$eq":"Andy1"\}\}&page-size=20
 ```
@@ -319,6 +332,7 @@ The header *X-Cassandra-Token: $ASTRA_DB_TOKEN* is to specify the token generate
 Notice that the collection *userInfo* has to have been created in your database.
 
 Run this command in your Terminal:
+
 ```bash
 curl -X 'GET' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/userInfo"'?where=\{"userName":\{"$eq":"Andy1"\}\}' -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN"
 ```
@@ -334,6 +348,7 @@ The JSON that is returned is of the following form:
 #### 3. How to POST a new user info with username *testUsername* and password *testPassword* in the *userInfo* collection:
 
 Run this command in your Terminal:
+
 ```bash
 curl -X 'POST' "https://$ASTRA_DB_ID-$ASTRA_DB_REGION.apps.astra.datastax.com/api/rest/v2/namespaces/$ASTRA_DB_KEYSPACENAME/collections/userInfo" -H 'accept: application/json' -H "X-Cassandra-Token: $ASTRA_DB_TOKEN" -H 'Content-Type: application/json' --data '
     {
@@ -358,4 +373,6 @@ The [JSONEncoder](https://developer.apple.com/documentation/foundation/jsonencod
 
 Check out the [Astra DB documentation](https://docs.datastax.com/en/astra/docs/develop/dev-with-doc.html) for more information and lots more examples of using cURL to connect to your database using the Document API.
 
-Good luck!
+## THE END
+
+Congratulations, you made it to the END!
