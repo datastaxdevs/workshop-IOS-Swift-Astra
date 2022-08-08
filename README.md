@@ -23,7 +23,7 @@ It will take a while to download. While this is happening, move on to the next s
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.08.20%20AM.png)
 3. After verifying the account, click on *Create Database*:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.52.43%20AM.png)
-4. Enter a database name, keyspace name, and region. Name them whatever you like. Then click on *Create Database*
+4. Enter a database name, keyspace name, and region. Name them whatever you like. For the sample app, the keyspace is named *gh_orders_userinfo*. Then click on *Create Database*
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2010.57.15%20AM.png)
 5. Click on *Go To Database*
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.01.41%20AM.png)
@@ -133,8 +133,8 @@ Button("DEV"){
     print("DEV")
     //This is where you can test functions by running the app and clicking on this button
     Task{
-        try await populateUserInfoDB()
-        try await populateOrdersDB(numNewOrders: 300)
+        await populateUserInfoDB()
+        await populateOrdersDB(numNewOrders: 300)
     }
 }
 .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.5)))
@@ -185,7 +185,7 @@ You can access Swagger UI from the Astra website:
 To create an empty collection named *newCol* in *keyspacename1* for example:
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%209.48.09%20AM.png)
 
-The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *keyspacename1*. If you want to customize the app by creating different collections, make sure to change using search and replace (in the *DBController.swift* file) the *userInfo* and *orders* to whatever you named them.
+The collections for the sample app are named: *userInfo* and *orders*. They are both in the keyspace *gh_orders_userinfo*. If you want to customize the app by creating different collections, make sure to change using search and replace (in the *DBController.swift* file) the *userInfo* and *orders* to whatever you named them.
 
 If you just want to test the app, you will have to create both of these collections in whatever keyspace you created.
 
