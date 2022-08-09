@@ -410,7 +410,6 @@ func changePassword(newPassword:String, userName:String) async -> Bool{
         }
         let docID = dict[dict.startIndex].key
         let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
         guard let uploadData = try? encoder.encode(Password(password: newPassword)) else {
             return false//could not convert to type data
         }
@@ -476,7 +475,6 @@ func postRequest(uploadData:Data, collection:String) async throws {
 //POST is successful if no error is thrown
 func postRequest(userInfo:UserInfo) async throws{
     let encoder = JSONEncoder()
-    encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(userInfo) else {
         throw AstraError.structToDataError//could not convert to type data
     }
@@ -487,7 +485,6 @@ func postRequest(userInfo:UserInfo) async throws{
 //POST is successful if no error is thrown
 func postRequest(order:Order) async throws{
     let encoder = JSONEncoder()
-    encoder.outputFormatting = .prettyPrinted
     guard let uploadData = try? encoder.encode(order) else {
         throw AstraError.structToDataError//could not convert to type data
     }
