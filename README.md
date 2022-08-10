@@ -127,6 +127,8 @@ An iPhone Simulator window should pop up:
 
 [Click here](https://developer.apple.com/documentation/xcode/running-your-app-in-the-simulator-or-on-a-device) or [here](https://www.twilio.com/blog/2018/07/how-to-test-your-ios-application-on-a-real-device.html) to run it on your personal device instead. You will need a [cable that connects to your laptop](https://www.apple.com/shop/product/MQGH2AM/A/usb-c-to-lightning-cable-2-m).
 
+If you get an error when trying to sign in, create an account, delete an account, or change password, it may be because you missed step 4. Make sure to finish that step before testing the app.
+
 That's it! You can now create accounts and post orders to your database! If you would like to populate your database with fake accounts and random orders, uncomment the DEV button in the *ContentView.swift* file by removing the */** and **/* that surrounds this code:
 ```swift
 Button("DEV"){
