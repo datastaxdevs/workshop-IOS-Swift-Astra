@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SystemConfiguration
 
 struct ChangePassword: View {
     @State var userName:String
