@@ -371,7 +371,3 @@ The structs/classes needed to perform HTTP requests from a Swift app are JSONEnc
 The [JSONEncoder](https://developer.apple.com/documentation/foundation/jsonencoder) class makes it easy to convert a struct into a JSON type which can then be posted to a collection of the Astra DB. The [URLRequest](https://developer.apple.com/documentation/foundation/urlrequest) struct encompasses the information regarding the HTTP request. This entails the URL, the HTTP method, and the HTTP headers. The [URLSession](https://developer.apple.com/documentation/foundation/urlsession) class handles actually performing the request to the server.
 
 Check out the [Astra DB documentation](https://docs.datastax.com/en/astra/docs/develop/dev-with-doc.html) for more information and lots more examples of using cURL to connect to your database using the Document API.
-
-## THE END
-
-Congratulations, you made it to the END!
