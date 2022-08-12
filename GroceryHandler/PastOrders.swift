@@ -10,6 +10,8 @@ import SwiftUI
 struct PastOrders: View {
     @State var userName:String
     @State var sorted:[Order]
+    @State private var dict = [String:Double]()
+    @State private var computeOrders = false
     var body: some View {
         VStack{
             if (sorted.count==1){
@@ -37,6 +39,16 @@ struct PastOrders: View {
             .cornerRadius(15)
             .font(.callout)
             .foregroundColor(Color(red: 0.1, green: 0.1, blue: 0.9))
+            .padding(.bottom, 10)
+            
+            Button("Compute all past orders"){
+                Task{
+                    dict = await computeAllOrders(orders: sorted)
+                    computeOrders = true
+                }
+            }
+            .buttonStyle(CustomButton(color:Color(red: 0, green: 0, blue: 0.2)))
+            NavigationLink(destination: ComputeOrders(userName: userName, dict :dict), isActive: $computeOrders) {EmptyView()}
         }
         .frame(width: 400, height: 800)
         .background(Color(red: 0.67, green: 0.87, blue: 0.9))

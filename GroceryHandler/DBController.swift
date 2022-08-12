@@ -168,25 +168,16 @@ func deleteOrdersForUserName(userName:String) async throws{
 }
 
 //if user has lots of receipts he wants to compute in one go
-func computeAllOrdersFor(userName:String) async {
-    do {
-        let (orders1, _) = try await getAllOrdersForUserNameAsync(userName:userName)
-        var dict = [String:Double]()
-        for order in orders1{
-            computeAmountOwed(order: order, dict: &dict)
-        }
-        for (key,value) in dict{
-            print("\(key) owes \(value) to \(userName)")
-        }
-    } catch AstraError.getError {
-        print("ASTRA GET ERROR CAUGHT")
-    } catch AstraError.stringToDataError {
-        print("Error converting string to DATA")
-    } catch AstraError.decodeIntoDictionaryError{
-        print("Error decoding into dictionary")
-    } catch {
-        print("error")
+//assumes all orders have the same userName -> same payer
+func computeAllOrders(orders:[Order]) async -> [String:Double] {
+    var dict = [String:Double]()
+    for order in orders{
+        computeAmountOwed(order: order, dict: &dict)
     }
+    //for (key,value) in dict{
+    //    print("\(key) owes \(value)")
+    //}
+    return dict
 }
 
 //create lots of fake accounts to test db

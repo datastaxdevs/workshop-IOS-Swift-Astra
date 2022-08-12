@@ -23,6 +23,7 @@
 		A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */; };
 		A4A63C43285791D1001EE632 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4A63C42285791D1001EE632 /* ContentView.swift */; };
 		A4A63C45285791D5001EE632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A4A63C44285791D5001EE632 /* Assets.xcassets */; };
+		A4F4F58F28A6C00B00FB76CD /* ComputeOrders.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F4F58E28A6C00B00FB76CD /* ComputeOrders.swift */; };
 		EF84459DEE1085B1CAC16682 /* Pods_GroceryHandler_GroceryHandlerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6584FAAE603011DD715A785E /* Pods_GroceryHandler_GroceryHandlerUITests.framework */; };
 		F33DA5A7CA68ADF4D1EB735D /* Pods_GroceryHandler.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D9DC67CA3D2D49B02FD96E6 /* Pods_GroceryHandler.framework */; };
 /* End PBXBuildFile section */
@@ -69,6 +70,7 @@
 		A4A63C40285791D1001EE632 /* GroceryHandlerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroceryHandlerApp.swift; sourceTree = "<group>"; };
 		A4A63C42285791D1001EE632 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A4A63C44285791D5001EE632 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A4F4F58E28A6C00B00FB76CD /* ComputeOrders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputeOrders.swift; sourceTree = "<group>"; };
 		A5B6D4039BBDF55DA085C652 /* Pods-GroceryHandler.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GroceryHandler.release.xcconfig"; path = "Target Support Files/Pods-GroceryHandler/Pods-GroceryHandler.release.xcconfig"; sourceTree = "<group>"; };
 		A76E48ACB455931006D7A15E /* Pods-GroceryHandler.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GroceryHandler.debug.xcconfig"; path = "Target Support Files/Pods-GroceryHandler/Pods-GroceryHandler.debug.xcconfig"; sourceTree = "<group>"; };
 		C1CAA0D953457D4E1CB4B4F6 /* Pods-GroceryHandler-GroceryHandlerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GroceryHandler-GroceryHandlerUITests.debug.xcconfig"; path = "Target Support Files/Pods-GroceryHandler-GroceryHandlerUITests/Pods-GroceryHandler-GroceryHandlerUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 				A4107DC2286770D700385DFF /* SignedIn.swift */,
 				A4A63C44285791D5001EE632 /* Assets.xcassets */,
 				A46031D92880BAEE00CE1470 /* AddUsers.swift */,
+				A4F4F58E28A6C00B00FB76CD /* ComputeOrders.swift */,
 			);
 			path = GroceryHandler;
 			sourceTree = "<group>";
@@ -449,6 +452,7 @@
 				A471DC15286A0A4600BDCA18 /* FinalizePrices.swift in Sources */,
 				A4A63C41285791D1001EE632 /* GroceryHandlerApp.swift in Sources */,
 				A4107DBF286770C000385DFF /* DBController.swift in Sources */,
+				A4F4F58F28A6C00B00FB76CD /* ComputeOrders.swift in Sources */,
 				A471DC11286A053800BDCA18 /* PictureReceipt.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -614,6 +618,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "Access the camera";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -646,6 +651,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "Access the camera";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
