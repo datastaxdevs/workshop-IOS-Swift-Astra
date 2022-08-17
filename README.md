@@ -11,10 +11,11 @@ Build an app in Swift that connects to the Datastax Astra Database. By replicati
 It doesn't matter if you join our workshop live or you prefer to work at your own pace,
 we have you covered. In this repository, you'll find everything you need for this workshop:
 
-- [Workshop Video](https://www.youtube.com/watch?v=U2R-6gKeXXk)
+- [Workshop Video/Youtube Link](https://www.youtube.com/watch?v=U2R-6gKeXXk)
 - [Slide deck](Slides/workshop-Swift-IOS-Astra.pdf)
 - [Discord chat](https://dtsx.io/discord)
 - [Questions and Answers](https://community.datastax.com/)
+- [Code for the workshop](https://gist.github.com/vmic2002/68bdfb71a55a1410ba0e708a81b24af1)
 
 ## About:
 This sample app is coded in Swift and was developed on the Xcode IDE. It connects to the Astra DB using the Document API. It handles user accounts (signing up, signing in, changing password and deleting accounts) as well as manually entering an order, taking a picture of the receipt to post an order, and seeing all past orders.
