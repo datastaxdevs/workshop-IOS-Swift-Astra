@@ -49,6 +49,12 @@ It will take a while to download. While this is happening, move on to the next s
 9. Make sure to copy the *Token* somewhere for later
 ![](READMEPictures/Screen%20Shot%202022-07-13%20at%2011.23.58%20AM.png)
 
+> **⚠️ Important**
+> ```
+> The instructor will show you on screen how to create a token 
+> but will have to destroy to token immediately for security reasons.
+> ```
+
 
 ## How to replicate the project:
 
